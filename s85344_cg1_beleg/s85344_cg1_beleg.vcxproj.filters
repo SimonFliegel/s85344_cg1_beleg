@@ -27,6 +27,9 @@
     <ClCompile Include="objects\Cube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="objects\Sphere.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
@@ -37,6 +40,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="objects\Cube.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Sphere.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

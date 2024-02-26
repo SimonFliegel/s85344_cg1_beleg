@@ -15,6 +15,7 @@
 
 #include "objects/Shape.h";
 #include "objects/Cube.h";
+#include "objects/Sphere.h";
 
 GLuint loadShaders(const char* vertexFilePath,
 	const char* fragmentFilePath,
@@ -26,6 +27,8 @@ GLint windowWidth = 800, windowHeight = 600;
 
 // Objects
 Cube cube;
+Sphere sphere;
+
 
 GLuint program;
 
@@ -39,13 +42,16 @@ void init(void)
 
 	cube.createShape();
 	cube.bind();
+	sphere.createShape();
+	sphere.bind();
 
 }
 
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	cube.draw();
+	sphere.draw();
+	//cube.draw();
 	glFlush();
 }
 

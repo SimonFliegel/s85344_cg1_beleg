@@ -147,6 +147,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="loadShaders.cpp" />
     <ClCompile Include="objects\Shape.cpp" />
+    <ClCompile Include="objects\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="objects\Cube.h" />
     <ClInclude Include="objects\Shape.h" />
+    <ClInclude Include="objects\Sphere.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
