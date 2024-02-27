@@ -1,5 +1,7 @@
 #include "Shape.h"
 
+#include <iostream>
+
 void Shape::bind() {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);

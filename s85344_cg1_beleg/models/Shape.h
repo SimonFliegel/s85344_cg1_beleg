@@ -21,12 +21,13 @@ private:
 	GLuint EBO;
 
 public:
+	Shape() = default;
+	~Shape() = default;
+	
 	std::vector<vertex> vertices;
 	std::vector<GLuint> indices;
 	GLuint texture;
 
-	Shape() = default;
-	
 	virtual void createShape() = 0;
 	void bind();
 	void draw() const;

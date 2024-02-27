@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -143,20 +143,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="objects\Cube.cpp" />
+    <ClCompile Include="models\Cube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="loadShaders.cpp" />
-    <ClCompile Include="objects\Shape.cpp" />
-    <ClCompile Include="objects\Sphere.cpp" />
+    <ClCompile Include="models\Shape.cpp" />
+    <ClCompile Include="models\Sphere.cpp" />
+    <ClCompile Include="models\Plain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
     <None Include="shader.vs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="objects\Cube.h" />
-    <ClInclude Include="objects\Shape.h" />
-    <ClInclude Include="objects\Sphere.h" />
+    <ClInclude Include="models\Cube.h" />
+    <ClInclude Include="models\Shape.h" />
+    <ClInclude Include="models\Sphere.h" />
+    <ClInclude Include="models\Plain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

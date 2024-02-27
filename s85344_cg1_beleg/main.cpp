@@ -9,13 +9,14 @@
 #include <string.h>
 #include <glm.hpp>
 #include <gtx/transform.hpp>
+#include <gtc/type_ptr.hpp>
 #include <glew.h>
 #include <freeglut.h>
 #include <FreeImage.h>
 
-#include "objects/Shape.h";
-#include "objects/Cube.h";
-#include "objects/Sphere.h";
+#include "models/Shape.h";
+#include "models/Cube.h";
+#include "models/Sphere.h";
 
 GLuint loadShaders(const char* vertexFilePath,
 	const char* fragmentFilePath,
@@ -29,6 +30,9 @@ GLint windowWidth = 800, windowHeight = 600;
 Cube cube;
 Sphere sphere;
 
+const float anglestep = 0.0001f;
+float theta = 0.0f;
+
 
 GLuint program;
 
@@ -40,8 +44,6 @@ void init(void)
 	program = loadShaders("shader.vs", "fragmentShader.fs", "", "", "", "");
 	glUseProgram(program);
 
-	cube.createShape();
-	cube.bind();
 	sphere.createShape();
 	sphere.bind();
 
@@ -49,9 +51,30 @@ void init(void)
 
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	// render loop
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glViewport(0, 0, windowWidth, windowHeight);
+
+	auto center = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	const GLfloat scale = 0.4;
+	GLint modelLoc = glGetUniformLocation(program, "model");
+
+	GLfloat radius = 0.6f;
+	auto model = glm::mat4(1.0f);
+	
+	model = glm::scale(model, glm::vec3(scale, scale, scale));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	sphere.draw();
-	//cube.draw();
+
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f + radius * cos(theta), 0.0f + radius * sin(theta), 0.0f));
+	model = glm::scale(model, glm::vec3(scale, scale, scale));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	sphere.draw();
+
+
 	glFlush();
 }
 
@@ -59,6 +82,13 @@ void reshape(int w, int h)
 {
 	windowWidth = w;
 	windowHeight = h;
+}
+
+void idle(void)
+{
+	theta += anglestep;
+	if (theta > PI) theta = -PI;
+	glutPostRedisplay();
 }
 
 int main(int argc, char** argv) 
@@ -75,5 +105,6 @@ int main(int argc, char** argv)
 	init();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
+	glutIdleFunc(idle);
 	glutMainLoop();
 }

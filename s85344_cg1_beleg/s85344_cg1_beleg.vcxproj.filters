@@ -21,13 +21,16 @@
     <ClCompile Include="loadShaders.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="objects\Shape.cpp">
+    <ClCompile Include="models\Cube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="objects\Cube.cpp">
+    <ClCompile Include="models\Shape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="objects\Sphere.cpp">
+    <ClCompile Include="models\Sphere.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="models\Plain.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,13 +39,16 @@
     <None Include="shader.vs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="objects\Shape.h">
+    <ClInclude Include="models\Cube.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="objects\Cube.h">
+    <ClInclude Include="models\Shape.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="objects\Sphere.h">
+    <ClInclude Include="models\Sphere.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="models\Plain.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
