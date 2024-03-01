@@ -143,22 +143,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="models\Cube.cpp" />
+    <ClCompile Include="util\FlyCamera.cpp" />
+    <ClCompile Include="models\base_models\Cube.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="loadShaders.cpp" />
-    <ClCompile Include="models\Shape.cpp" />
-    <ClCompile Include="models\Sphere.cpp" />
-    <ClCompile Include="models\Plain.cpp" />
+    <ClCompile Include="util\loadShaders.cpp" />
+    <ClCompile Include="models\base_models\Shape.cpp" />
+    <ClCompile Include="models\base_models\Sphere.cpp" />
+    <ClCompile Include="models\base_models\Plain.cpp" />
+    <ClCompile Include="models\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentShader.fs" />
-    <None Include="shader.vs" />
+    <None Include="shaders\fragmentShader.fs" />
+    <None Include="shaders\vertexShader.vs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="models\Cube.h" />
-    <ClInclude Include="models\Shape.h" />
-    <ClInclude Include="models\Sphere.h" />
-    <ClInclude Include="models\Plain.h" />
+    <ClInclude Include="util\FlyCamera.h" />
+    <ClInclude Include="models\base_models\Cube.h" />
+    <ClInclude Include="models\base_models\Shape.h" />
+    <ClInclude Include="models\base_models\Sphere.h" />
+    <ClInclude Include="models\base_models\Plain.h" />
+    <ClInclude Include="models\SolarSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

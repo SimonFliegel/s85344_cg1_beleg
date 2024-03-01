@@ -1,5 +1,6 @@
 #include "Sphere.h"
 
+// @see: http://www.songho.ca/opengl/gl_sphere.html
 void Sphere::createShape() {
 	const float radius = 0.5f;
 	const int resolution = 10;
@@ -12,7 +13,6 @@ void Sphere::createShape() {
 	float stackStep = PI / resolution;
 	float sectorAngle, stackAngle;
 
-	// @see: http://www.songho.ca/opengl/gl_sphere.html
 	for (int i = 0; i <= resolution; ++i) { // iterate over longitude lines
 		stackAngle = PI / 2 - i * stackStep;
 		xy = radius * cosf(stackAngle);

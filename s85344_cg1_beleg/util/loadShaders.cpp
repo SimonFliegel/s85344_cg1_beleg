@@ -5,6 +5,8 @@
 #include <vector>
 #include <glew.h>
 
+
+// @TODO make class
 GLuint loadShaders(const char* vertexFilePath, const char* fragmentFilePath,
 	const char* geometryFilePath, const char* tesscontrolFilePath,
 	const char* tessevaluationFilePath, const char* computeFilePath) {
