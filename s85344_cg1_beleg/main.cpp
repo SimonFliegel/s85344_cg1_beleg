@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory>
 #include <string.h>
 #include <glm.hpp>
 #include <gtx/transform.hpp>
@@ -17,6 +18,8 @@
 #include "models/base_models/Shape.h";
 #include "models/base_models/Cube.h";
 #include "models/base_models/Sphere.h";
+#include "models/base_models/Plain.h"
+#include "models/SolarSystem.h";
 
 #include "util/FlyCamera.h";
 
@@ -35,18 +38,19 @@ GLuint program;
 GLint windowWidth = 800;
 GLint windowHeight = 600;
 
-FlyCamera flyCamera;
+auto flyCamera = FlyCamera();
+bool mouseMovedByUser = true;
 
 // Objects
-Cube cube;
-Sphere sphere;
+Cube cube = Cube();
+Sphere sphere = Sphere();
+Plain plain = Plain();
+std::unique_ptr<SolarSystem> solarSystem;
 
 float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
-// temp
-const float anglestep = 0.0001f;
-float theta = 0.0f;
+
 
 
 
@@ -61,9 +65,7 @@ void init(void)
 	glUseProgram(program);
 
 	flyCamera = FlyCamera();
-
-	sphere.createShape();
-	sphere.bind();
+	solarSystem = std::make_unique<SolarSystem>(program);
 
 }
 
@@ -77,29 +79,18 @@ void display(void)
 	GLint viewLoc = glGetUniformLocation(program, "view");
 	GLint projectionLoc = glGetUniformLocation(program, "projection");
 	
+	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-	
-	
-	auto center = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	const GLfloat scale = 0.4;
-
-	GLfloat radius = 0.6f;
-	auto model = glm::mat4(1.0f);
-	
-	model = glm::scale(model, glm::vec3(scale, scale, scale));
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	sphere.draw();
-
+	// draw solar system
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f + radius * cos(theta), 0.0f + radius * sin(theta), 0.0f));
-	model = glm::scale(model, glm::vec3(scale, scale, scale));
+	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	sphere.draw();
+	solarSystem->draw();
 
 	glFlush();
 }
@@ -112,10 +103,6 @@ void reshape(int w, int h)
 
 void idle(void)
 {
-	// orbiting motion
-	theta += anglestep;
-	if (theta > PI) theta = -PI;
-
 	deltaTime = ((float) glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds
 	glutPostRedisplay();
 }
@@ -139,7 +126,7 @@ void keyboard(unsigned char key, int x, int y)
 void mouseMovement(int x, int y)
 {
 	flyCamera.processMouseInput(x, y);
-
+	//glutWarpPointer(windowWidth / 2, windowHeight / 2); TODO: fix this
 	glutPostRedisplay();
 }
 
@@ -166,6 +153,7 @@ int main(int argc, char** argv)
 	glutIdleFunc(idle);
 	glutKeyboardFunc(keyboard);
 	glutPassiveMotionFunc(mouseMovement);
+	//glutSetCursor(GLUT_CURSOR_NONE);
 	glutMouseWheelFunc(scroll);
 	glutMainLoop();
 }

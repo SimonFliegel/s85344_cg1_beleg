@@ -4,7 +4,7 @@
 
 class Sphere : public Shape
 {
-    public:
+public:
 	void createShape() override;
 };
 

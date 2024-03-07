@@ -8,10 +8,10 @@
 
 #define PI 3.14150
 
-struct vertex {
+struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
-	glm::vec2 texture_coord;
+	glm::vec2 texCoord;
 };
 
 class Shape {
@@ -24,7 +24,7 @@ public:
 	Shape() = default;
 	~Shape() = default;
 	
-	std::vector<vertex> vertices;
+	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	GLuint texture;
 

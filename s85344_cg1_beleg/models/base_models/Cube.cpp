@@ -1,7 +1,9 @@
+#include <iostream>
+
 #include "Cube.h"
 
 void Cube::createShape() {
-	vertex v;
+	Vertex v;
 
 	const glm::vec3 positions[8] = {
 		{-0.5f, -0.5f, 0.5f}, // Front bottom left
@@ -42,49 +44,8 @@ void Cube::createShape() {
 	for (int i = 0; i < 36; i++) {
 		v.position = positions[indices[i]];
 		v.normal = normals[i / 6];
-		v.texture_coord = texture_coords[i % 4];
+		v.texCoord = texture_coords[i % 4];
 		vertices.push_back(v);
 	}
-
-	/*vertices.push_back({ positions[0], normals[0], texture_coords[0] });
-	vertices.push_back({ positions[1], normals[0], texture_coords[1] });
-	vertices.push_back({ positions[2], normals[0], texture_coords[2] });
-	vertices.push_back({ positions[3], normals[0], texture_coords[3] });*/
-
-	//// Front face
-	//v.position = glm::vec3(-0.5f, -0.5f, 0.5f); v.normal = glm::vec3(0.0f, 0.0f, 1.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, -0.5f, 0.5f); v.normal = glm::vec3(0.0f, 0.0f, 1.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, 0.5f); v.normal = glm::vec3(0.0f, 0.0f, 1.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, 0.5f, 0.5f); v.normal = glm::vec3(0.0f, 0.0f, 1.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
-
-	//// Back face
-	//v.position = glm::vec3(-0.5f, -0.5f, -0.5f); v.normal = glm::vec3(0.0f, 0.0f, -1.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, -0.5f, -0.5f); v.normal = glm::vec3(0.0f, 0.0f, -1.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, -0.5f); v.normal = glm::vec3(0.0f, 0.0f, -1.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, 0.5f, -0.5f); v.normal = glm::vec3(0.0f, 0.0f, -1.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
-
-	//// Left face
-	//v.position = glm::vec3(-0.5f, -0.5f, -0.5f); v.normal = glm::vec3(-1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, -0.5f, 0.5f); v.normal = glm::vec3(-1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, 0.5f, 0.5f); v.normal = glm::vec3(-1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, 0.5f, -0.5f); v.normal = glm::vec3(-1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
-
-	//// Right face
-	//v.position = glm::vec3(0.5f, -0.5f, -0.5f); v.normal = glm::vec3(1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, -0.5f, 0.5f); v.normal = glm::vec3(1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, 0.5f); v.normal = glm::vec3(1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, -0.5f); v.normal = glm::vec3(1.0f, 0.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
-
-	//// Up face
-	//v.position = glm::vec3(-0.5f, -0.5f, -0.5f); v.normal = glm::vec3(0.0f, 1.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, -0.5f, -0.5f); v.normal = glm::vec3(0.0f, 1.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, -0.5f, 0.5f); v.normal = glm::vec3(0.0f, 1.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, -0.5f, 0.5f); v.normal = glm::vec3(0.0f, 1.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
-
-	//// Down face
-	//v.position = glm::vec3(-0.5f, 0.5f, -0.5f); v.normal = glm::vec3(0.0f, -1.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, -0.5f); v.normal = glm::vec3(0.0f, -1.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 0.0f); vertices.push_back(v);
-	//v.position = glm::vec3(0.5f, 0.5f, 0.5f); v.normal = glm::vec3(0.0f, -1.0f, 0.0f); v.texture_coord = glm::vec2(1.0f, 1.0f); vertices.push_back(v);
-	//v.position = glm::vec3(-0.5f, 0.5f, 0.5f); v.normal = glm::vec3(0.0f, -1.0f, 0.0f); v.texture_coord = glm::vec2(0.0f, 1.0f); vertices.push_back(v);
 
 }

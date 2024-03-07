@@ -5,7 +5,6 @@
 class Cube : public Shape
 {
 	public:
-	Cube() = default;
 	void createShape() override;
 };
 

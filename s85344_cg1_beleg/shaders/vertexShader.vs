@@ -1,16 +1,17 @@
 
 #version 450 core  // 420, 330 core , compatibility
 
-layout(location = 0) in vec4 vPosition;
-layout(location = 1) in vec4 vColor;
+layout(location = 0) in vec3 aPosition;
+layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec2 aTexCoord;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec4 Color;
+out vec2 texCoord;
 
 void main() { 
-	gl_Position = projection * view * model * vPosition;
-	Color = vec4(1.0, 0.0, 0.0, 1.0);
+	gl_Position = projection * view * model * vec4(aPosition, 1.0f);
+	texCoord = vec2(aTexCoord.x, aTexCoord.y);
 }

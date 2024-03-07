@@ -5,6 +5,6 @@
 class Plain : public Shape
 {
 public:
-	void createShape();
+	void createShape() override;
 };
 

@@ -39,6 +39,9 @@
     <ClCompile Include="models\SolarSystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="util\Texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.fs" />
@@ -61,6 +64,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="models\SolarSystem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Texture.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

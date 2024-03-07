@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="util\Texture.cpp" />
     <ClCompile Include="util\FlyCamera.cpp" />
     <ClCompile Include="models\base_models\Cube.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,6 +158,7 @@
     <None Include="shaders\vertexShader.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="util\Texture.h" />
     <ClInclude Include="util\FlyCamera.h" />
     <ClInclude Include="models\base_models\Cube.h" />
     <ClInclude Include="models\base_models\Shape.h" />
