@@ -18,6 +18,7 @@ SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 		shader.setInt(planets[i].textureLoc, textures[i]->getTextureUnit());
 	}
 
+	applyLighting();
 	drawSolarSystem(true, 0.0f);
 }
 
@@ -73,5 +74,6 @@ glm::vec3 SolarSystem::getSunPosition() const
 
 void SolarSystem::applyLighting()
 {
+	shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); // white light
 	// TODO
 }
