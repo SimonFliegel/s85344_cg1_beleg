@@ -28,7 +28,6 @@ void Texture::loadTexture()
 	}
 
 	FIBITMAP* bitmap = FreeImage_Load(format, texturePath);
-	
 
 	GLint bitmapWidth = FreeImage_GetWidth(bitmap);
 	GLint bitmapHeight = FreeImage_GetHeight(bitmap);
@@ -39,7 +38,8 @@ void Texture::loadTexture()
 	
 	bind();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapWidth, bitmapHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+	// GL_BGR_EXT because FreeImage loads in BGR format and OpenGL expects RGB format
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapWidth, bitmapHeight, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, textureData);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter);

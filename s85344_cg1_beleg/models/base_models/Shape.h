@@ -20,6 +20,9 @@ private:
 	GLuint VBO;
 	GLuint EBO;
 
+protected:
+	virtual void createShape() = 0;
+
 public:
 	Shape() = default;
 	~Shape() = default;
@@ -28,7 +31,6 @@ public:
 	std::vector<GLuint> indices;
 	GLuint texture;
 
-	virtual void createShape() = 0;
 	void bind();
 	void draw() const;
 };

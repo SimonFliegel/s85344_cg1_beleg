@@ -4,7 +4,7 @@
 
 class Cube : public Shape
 {
-	public:
+private:
 	void createShape() override;
 };
 
