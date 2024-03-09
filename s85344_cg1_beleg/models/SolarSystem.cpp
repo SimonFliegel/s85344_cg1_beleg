@@ -4,21 +4,19 @@
 
 #include "SolarSystem.h"
 
-SolarSystem::SolarSystem(GLuint program) : program(program)
+SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 {
-	modelLoc = glGetUniformLocation(program, "model");
-	sphereIdLoc = glGetUniformLocation(program, "sphereId");
+	
 	sphere.createShape();
 	sphere.bind();
 
 	sunTexture = std::make_unique<Texture>(sun.texturePath, 0);
-	glUniform1i(glGetUniformLocation(program, sun.textureLoc), sunTexture->getTextureUnit());
+	shader.setInt(sun.textureLoc, sunTexture->getTextureUnit());
 	for (int i = 0; i < sizeof(planets) / sizeof(Planet); i++)
 	{
 		textures[i] = std::make_unique<Texture>(planets[i].texturePath, i+1); // sun is 0
-		glUniform1i(glGetUniformLocation(program, planets[i].textureLoc), textures[i]->getTextureUnit());
+		shader.setInt(planets[i].textureLoc, textures[i]->getTextureUnit());
 	}
-
 
 	drawSolarSystem(true, 0.0f);
 }
@@ -31,6 +29,8 @@ void SolarSystem::draw()
 }
 
 void SolarSystem::drawSolarSystem(bool firstDraw, float angle) {
+	const std::string SPHERE_ID = "sphereId";
+
 	// sun
 	if (firstDraw) {
 		sunTexture->bind();
@@ -38,8 +38,8 @@ void SolarSystem::drawSolarSystem(bool firstDraw, float angle) {
 	auto model = glm::mat4(1.0f);
 	model = glm::translate(model, sun.position);
 	model = glm::scale(model, glm::vec3(sun.size, sun.size, sun.size));
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniform1i(sphereIdLoc, 0);
+	shader.setInt(SPHERE_ID, 0);
+	shader.setMat4("model", model);
 	sphere.draw();
 
 	for (int i = 0; i < sizeof(planets) / sizeof(Planet); i++)
@@ -53,8 +53,8 @@ void SolarSystem::drawSolarSystem(bool firstDraw, float angle) {
 		constraintAngle(planetAngle);
 		model = glm::translate(model, glm::vec3(planet.radius * cos(planetAngle), planet.radius * sin(planetAngle), 0.0f));
 		model = glm::scale(model, glm::vec3(planet.size, planet.size, planet.size));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniform1i(sphereIdLoc, i+1);
+		shader.setInt(SPHERE_ID, i+1);
+		shader.setMat4("model", model);
 		sphere.draw();
 	}
 }
@@ -64,4 +64,14 @@ void SolarSystem::constraintAngle(float &angle) const {
 	{
 		angle = 0.0f;
 	}
+}
+
+glm::vec3 SolarSystem::getSunPosition() const
+{
+	return sun.position;
+}
+
+void SolarSystem::applyLighting()
+{
+	// TODO
 }

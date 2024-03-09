@@ -13,7 +13,6 @@
 #include <gtc/type_ptr.hpp>
 #include <glew.h>
 #include <freeglut.h>
-#include <FreeImage.h>
 
 #include "models/base_models/Shape.h";
 #include "models/base_models/Cube.h";
@@ -22,18 +21,12 @@
 #include "models/SolarSystem.h";
 
 #include "util/FlyCamera.h";
+#include "util/Shader.h";
 
 const char* VERTEX_SHADER = "shaders/vertexShader.vs";
 const char* FRAGMENT_SHADER = "shaders/fragmentShader.fs";
 
-GLuint loadShaders(const char* vertexFilePath,
-	const char* fragmentFilePath,
-	const char* geometryFilePath,
-	const char* tesscontrolFilePath,
-	const char* tessevaluationFilePath,
-	const char* computeFilePath);
-
-GLuint program;
+std::shared_ptr<Shader> shader;
 
 GLint windowWidth = 800;
 GLint windowHeight = 600;
@@ -56,17 +49,17 @@ float lastFrame = 0.0f;
 
 void init(void)
 {
+	shader = std::make_shared<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
+	shader->use();
+	flyCamera = FlyCamera();
+
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);
 
 	printf("\n%s", (char*)glGetString(GL_RENDERER));
 	printf("\n%s", (char*)glGetString(GL_VERSION));
 	printf("\n%s\n", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-	program = loadShaders(VERTEX_SHADER, FRAGMENT_SHADER, "", "", "", "");
-	glUseProgram(program);
 
-	flyCamera = FlyCamera();
-	solarSystem = std::make_unique<SolarSystem>(program);
-
+	solarSystem = std::make_unique<SolarSystem>(*shader);
 }
 
 void display(void)
@@ -74,22 +67,19 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glViewport(0, 0, windowWidth, windowHeight);
-
-	GLint modelLoc = glGetUniformLocation(program, "model");
-	GLint viewLoc = glGetUniformLocation(program, "view");
-	GLint projectionLoc = glGetUniformLocation(program, "projection");
 	
+	// maybe extract to method?
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	shader->setMat4("view", view);
+	shader->setMat4("projection", projection);
 
 	// draw solar system
 	model = glm::mat4(1.0f);
 	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	shader->setMat4("model", model);
 	solarSystem->draw();
 
 	glFlush();

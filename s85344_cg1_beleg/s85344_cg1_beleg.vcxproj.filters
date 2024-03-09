@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="util\loadShaders.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="models\base_models\Cube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="util\Texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Shader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,6 +67,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="util\Texture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Shader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

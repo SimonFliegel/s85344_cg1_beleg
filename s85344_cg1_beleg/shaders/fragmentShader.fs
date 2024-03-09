@@ -1,10 +1,13 @@
 
 #version 450 core  // 420, 330 core , compatibility
 
-out vec4 fragColor;
 
 in vec2 texCoord;
 
+//uniform vec3 lightPos; // center of sun
+//uniform vec3 lightColor;
+
+// textures solar system
 uniform sampler2D texSun; // 0
 uniform sampler2D texMercury;
 uniform sampler2D texVenus;
@@ -17,7 +20,14 @@ uniform sampler2D texNeptune; // 8
 
 uniform int sphereId; // 0-8
 
+out vec4 fragColor;
+
 void main() {
+    // ambient
+    //float ambientStrength = 0.01f;
+    //vec3 
+
+
     if (sphereId == 0) {
         fragColor = texture(texSun, texCoord);
     } else if (sphereId == 1) {
@@ -37,5 +47,4 @@ void main() {
     } else if (sphereId == 8) {
         fragColor = texture(texNeptune, texCoord);
     }
-    //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

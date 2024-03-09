@@ -1,8 +1,11 @@
 #pragma once
+
 #include <array>
+#include <memory>
 
 #include "base_models/Sphere.h";
 #include "../util/Texture.h";
+#include "../util/Shader.h"
 
 struct Sun {
 	float size;
@@ -34,11 +37,12 @@ const Planet NEPTUNE{ 1.0f, 0.3f, 0.15f, "textures/neptune.jpg", "texNeptune"};
 class SolarSystem
 {
 public:
-	explicit SolarSystem(GLuint program = 0); // need to do uniforms with shaders
+	explicit SolarSystem(const Shader& shader); // need to do uniforms with shaders
 	void draw();
+	glm::vec3 getSunPosition() const;
 
 private:
-	GLuint program;
+	Shader shader;
 	int modelLoc;
 	int sphereIdLoc;
 	const float SPEED = 0.0001f; // used as a multiplier for the orbiting motion
@@ -53,6 +57,7 @@ private:
 
 	void drawSolarSystem(bool firstDraw, float angle);
 	void constraintAngle(float& angle) const;
+	void applyLighting();
 };
 
 
