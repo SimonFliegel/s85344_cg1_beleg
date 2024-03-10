@@ -17,7 +17,7 @@ SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 	}
 
 	applyLighting();
-	drawSolarSystem(true, 0.0f);
+	drawSolarSystem(true, 0.0f); // initial draw to bind textures
 }
 
 void SolarSystem::draw()
@@ -63,11 +63,6 @@ void SolarSystem::constraintAngle(float &angle) const {
 	{
 		angle = 0.0f;
 	}
-}
-
-glm::vec3 SolarSystem::getSunPosition() const
-{
-	return sun.position;
 }
 
 void SolarSystem::drawSaturn(bool firstDraw, float angle)

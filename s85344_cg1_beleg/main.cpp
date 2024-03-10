@@ -4,8 +4,7 @@
   Matr.-Nr: 53043
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
 #include <memory>
 #include <string.h>
 #include <glm.hpp>
@@ -23,43 +22,44 @@
 #include "util/FlyCamera.h";
 #include "util/Shader.h";
 
-const char* VERTEX_SHADER = "shaders/vertexShader.vs";
-const char* FRAGMENT_SHADER = "shaders/fragmentShader.fs";
-
-std::shared_ptr<Shader> shader;
+// shaders
+const char* const VERTEX_SHADER = "shaders/vertexShader.vs";
+const char* const FRAGMENT_SHADER = "shaders/fragmentShader.fs";
+const char* const SOLARSYSTEM_FRAGMENT_SHADER = "shaders/solarSystem.fs";
+std::unique_ptr<Shader> shader;
+std::unique_ptr<Shader> solarSystemShader;
 
 GLint windowWidth = 800;
 GLint windowHeight = 600;
 
-auto flyCamera = FlyCamera();
-bool mouseMovedByUser = true;
+FlyCamera flyCamera;
+//bool mouseMovedByUser = true;
 
-// Objects
-Cube cube = Cube();
-Sphere sphere = Sphere();
-Plain plain = Plain();
+// models
+const Cube cube;
+const Sphere sphere;
+const Plain plain;
 std::unique_ptr<SolarSystem> solarSystem;
 
 float deltaTime = 0.0f; // time between current frame and last frame
-float lastFrame = 0.0f;
-
-
-
+GLint lastFrame = 0;
 
 
 void init(void)
 {
-	shader = std::make_shared<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
-	shader->use();
+	shader = std::make_unique<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
+	solarSystemShader = std::make_unique<Shader>(VERTEX_SHADER, SOLARSYSTEM_FRAGMENT_SHADER);
+
 	flyCamera = FlyCamera();
 
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);
 
-	printf("\n%s", (char*)glGetString(GL_RENDERER));
-	printf("\n%s", (char*)glGetString(GL_VERSION));
-	printf("\n%s\n", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+	std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "OpenGL Version:  " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "GLSL Version:    " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-	solarSystem = std::make_unique<SolarSystem>(*shader);
+	solarSystemShader->use();
+	solarSystem = std::make_unique<SolarSystem>(*solarSystemShader);
 }
 
 void display(void)
@@ -73,13 +73,13 @@ void display(void)
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
-	shader->setMat4("view", view);
-	shader->setMat4("projection", projection);
+	solarSystemShader->setMat4("view", view);
+	solarSystemShader->setMat4("projection", projection);
 
 	// draw solar system
 	model = glm::mat4(1.0f);
 	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-	shader->setMat4("model", model);
+	solarSystemShader->setMat4("model", model);
 	solarSystem->draw();
 
 	glFlush();
@@ -93,7 +93,7 @@ void reshape(int w, int h)
 
 void idle(void)
 {
-	deltaTime = ((float) glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds
+	deltaTime = (glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds
 	glutPostRedisplay();
 }
 

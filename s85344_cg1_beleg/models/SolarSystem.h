@@ -37,9 +37,8 @@ const Planet NEPTUNE{ 1.0f, 0.3f, 0.15f, "textures/neptune.jpg", "texNeptune"};
 class SolarSystem
 {
 public:
-	explicit SolarSystem(const Shader& shader); // need to do uniforms with shaders
+	explicit SolarSystem(const Shader& shader);
 	void draw();
-	glm::vec3 getSunPosition() const;
 
 private:
 	Shader shader;
