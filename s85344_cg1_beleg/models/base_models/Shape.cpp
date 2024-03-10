@@ -1,6 +1,6 @@
-#include "Shape.h"
-
 #include <iostream>
+
+#include "Shape.h"
 
 void Shape::bind() {
 	glGenVertexArrays(1, &VAO);

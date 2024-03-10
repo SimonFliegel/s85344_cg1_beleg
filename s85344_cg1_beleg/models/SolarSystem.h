@@ -56,6 +56,7 @@ private:
 	std::array<std::unique_ptr<Texture>, 8> textures;
 
 	void drawSolarSystem(bool firstDraw, float angle);
+	void drawSaturn(bool firstDraw, float angle);
 	void constraintAngle(float& angle) const;
 	void applyLighting();
 };

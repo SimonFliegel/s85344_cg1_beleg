@@ -6,8 +6,6 @@
 
 SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 {
-	
-	sphere.createShape();
 	sphere.bind();
 
 	sunTexture = std::make_unique<Texture>(sun.texturePath, 0);
@@ -70,6 +68,11 @@ void SolarSystem::constraintAngle(float &angle) const {
 glm::vec3 SolarSystem::getSunPosition() const
 {
 	return sun.position;
+}
+
+void SolarSystem::drawSaturn(bool firstDraw, float angle)
+{
+	// TODO
 }
 
 void SolarSystem::applyLighting()

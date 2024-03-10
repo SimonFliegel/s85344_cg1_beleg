@@ -1,5 +1,6 @@
 #include "Plain.h"
 
+
 void Plain::createShape()
 {
 	Vertex v;
@@ -14,4 +15,7 @@ void Plain::createShape()
 	};
 }
 
+Plain::Plain() {
+	createShape();
+}
 

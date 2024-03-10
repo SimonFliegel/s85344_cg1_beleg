@@ -4,7 +4,9 @@
 
 class Plain : public Shape
 {
+protected:
+	void createShape() final;
 public:
-	void createShape() override;
+	Plain();
 };
 

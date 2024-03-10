@@ -22,15 +22,13 @@ private:
 
 protected:
 	virtual void createShape() = 0;
+	std::vector<Vertex> vertices;
+	std::vector<GLuint> indices;
 
 public:
 	Shape() = default;
-	~Shape() = default;
+	virtual ~Shape() = default;
 	
-	std::vector<Vertex> vertices;
-	std::vector<GLuint> indices;
-	GLuint texture;
-
 	void bind();
 	void draw() const;
 };

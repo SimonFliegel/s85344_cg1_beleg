@@ -4,7 +4,9 @@
 
 class Cube : public Shape
 {
-private:
-	void createShape() override;
+protected:
+	void createShape() final;
+public:
+	Cube();
 };
 

@@ -6,7 +6,8 @@ void Sphere::createShape() {
 	const int RESOLUTION = 20;
 
 	float x, y, z, xy;
-	float normalX, normalY, normalZ, lengthInv = 1.0f / radius;
+	float normalX, normalY, normalZ;
+	float lengthInv = 1.0f / radius;
 	float textureX, textureY;
 
 	float sectorStep = 2 * PI / RESOLUTION;
@@ -58,4 +59,8 @@ void Sphere::createShape() {
 			}
 		}
 	}
+}
+
+Sphere::Sphere() {
+	createShape();
 }

@@ -1,6 +1,8 @@
+#include "Cube.h"
+
 #include <iostream>
 
-#include "Cube.h"
+
 
 void Cube::createShape() {
 	Vertex v;
@@ -48,4 +50,8 @@ void Cube::createShape() {
 		vertices.push_back(v);
 	}
 
+}
+
+Cube::Cube() {
+	createShape();
 }

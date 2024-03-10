@@ -4,7 +4,9 @@
 
 class Sphere : public Shape
 {
+protected:
+	void createShape() final;
 public:
-	void createShape() override;
+	Sphere();
 };
 
