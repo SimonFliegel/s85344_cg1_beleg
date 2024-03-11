@@ -14,7 +14,7 @@ enum class ECameraMovementDirection
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float MOVEMENT_SPEED = 0.001f;
+const float MOVEMENT_SPEED = 1.0f;
 const float SENSITIVITY = 0.1f;
 const float FOV = 45.0f; // min zoom
 const float MAX_ZOOM = 5.0f;

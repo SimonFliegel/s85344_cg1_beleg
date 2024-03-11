@@ -22,6 +22,16 @@
 #include "util/FlyCamera.h";
 #include "util/Shader.h";
 
+
+// settings
+const GLuint FPS = 60; // only in idle
+// true fps measurement
+double lastTime = 0;
+unsigned int frameCounter = 0;
+
+GLint windowWidth = 800;
+GLint windowHeight = 600;
+
 // shaders
 const char* const VERTEX_SHADER = "shaders/vertexShader.vs";
 const char* const FRAGMENT_SHADER = "shaders/fragmentShader.fs";
@@ -29,11 +39,11 @@ const char* const SOLARSYSTEM_FRAGMENT_SHADER = "shaders/solarSystem.fs";
 std::unique_ptr<Shader> shader;
 std::unique_ptr<Shader> solarSystemShader;
 
-GLint windowWidth = 800;
-GLint windowHeight = 600;
-
+// camera
 FlyCamera flyCamera;
 //bool mouseMovedByUser = true;
+float deltaTime = 0.0f; // time between current frame and last frame
+float lastFrame = 0.0f;
 
 // models
 const Cube cube;
@@ -41,18 +51,34 @@ const Sphere sphere;
 const Plain plain;
 std::unique_ptr<SolarSystem> solarSystem;
 
-float deltaTime = 0.0f; // time between current frame and last frame
-GLint lastFrame = 0;
 
+
+// updateInterval in seconds
+void displayFps(unsigned int updateInterval)
+{
+	double delta = (glutGet(GLUT_ELAPSED_TIME) - lastTime) / 1000;
+	if (delta > updateInterval)
+	{
+		auto fps = int(frameCounter / delta);
+		std::string windowTitle = "s85344_cg1_beleg - FPS: " + std::to_string(fps);
+		glutSetWindowTitle(windowTitle.c_str());
+		lastTime = glutGet(GLUT_ELAPSED_TIME);
+		frameCounter = 0;
+	}
+	else
+	{
+		frameCounter++;
+	}
+}
 
 void init(void)
 {
+	displayFps(0.0f); // initial call to update window title
+
 	shader = std::make_unique<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
 	solarSystemShader = std::make_unique<Shader>(VERTEX_SHADER, SOLARSYSTEM_FRAGMENT_SHADER);
 
 	flyCamera = FlyCamera();
-
-	lastFrame = glutGet(GLUT_ELAPSED_TIME);
 
 	std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
 	std::cout << "OpenGL Version:  " << glGetString(GL_VERSION) << std::endl;
@@ -67,6 +93,11 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glViewport(0, 0, windowWidth, windowHeight);
+
+	deltaTime = (glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds, in theory 1/FPS in idle
+	lastFrame = glutGet(GLUT_ELAPSED_TIME);
+
+	displayFps(1.0f);
 	
 	// maybe extract to method?
 	glm::mat4 model = glm::mat4(1.0f);
@@ -80,7 +111,7 @@ void display(void)
 	model = glm::mat4(1.0f);
 	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 	solarSystemShader->setMat4("model", model);
-	solarSystem->draw();
+	solarSystem->draw(deltaTime);
 
 	glFlush();
 }
@@ -91,11 +122,6 @@ void reshape(int w, int h)
 	windowHeight = h;
 }
 
-void idle(void)
-{
-	deltaTime = (glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds
-	glutPostRedisplay();
-}
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -120,11 +146,18 @@ void mouseMovement(int x, int y)
 	glutPostRedisplay();
 }
 
-void scroll(int button, int dir, int x, int y)
+void scroll(int, int dir, int, int)
 {
 	flyCamera.processScrollInput(dir);
-
 	glutPostRedisplay();
+}
+
+void updateDisplay(int)
+{
+	// animation code
+	
+	glutPostRedisplay();
+	glutTimerFunc(1000 / FPS, updateDisplay, 0);
 }
 
 int main(int argc, char** argv) 
@@ -138,12 +171,24 @@ int main(int argc, char** argv)
 	glutCreateWindow(argv[0]);
 	if (glewInit()) printf("Error");
 	init();
+
+	// settings
+	/*glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
+
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
-	glutIdleFunc(idle);
 	glutKeyboardFunc(keyboard);
 	glutPassiveMotionFunc(mouseMovement);
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	glutMouseWheelFunc(scroll);
+	glutTimerFunc(1000 / FPS, updateDisplay, 0);
+
 	glutMainLoop();
+
 }
+
+

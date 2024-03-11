@@ -2,7 +2,7 @@
 
 #include <gtx/transform.hpp>
 
-FlyCamera::FlyCamera(float yaw, float pitch, float zoom, float speed, float sensitvity) : zoom(zoom)
+FlyCamera::FlyCamera(float yaw, float pitch, float zoom, float speed, float sensitvity)
 {
 	this->zoom = zoom;
 	this->yaw = yaw;
