@@ -32,12 +32,20 @@ void SolarSystem::drawSolarSystem(float deltaTime, bool isFirstDraw) {
 	if (isFirstDraw) {
 		sun.texture.bind();
 	}
+
+	float sunRotationAngle = sun.rotationAngle + sun.rotationSpeed * SPEED * deltaTime;
+
 	auto model = glm::mat4(1.0f);
 	model = glm::translate(model, sun.position);
+	model = glm::rotate(model, sunRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sun.size, sun.size, sun.size));
+
 	shader.setInt(SPHERE_ID, 0);
 	shader.setMat4("model", model);
 	sphere.draw();
+
+	// update angle
+	sun.rotationAngle = sunRotationAngle;
 
 	for (int i = 0; i < NUM_PLANETS; i++)
 	{

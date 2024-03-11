@@ -10,6 +10,7 @@
 struct Sun {
 	const float size;
 	const glm::vec3 position;
+	float rotationAngle;
 	const float rotationSpeed;
 	Texture texture;
 	const char* textureLoc;
@@ -40,7 +41,7 @@ private:
 	const float SPEED = 1.0f; // used as a multiplier for the orbiting motion (dependent on FPS)
 	Sphere sphere = Sphere();
 
-	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 8.0f, Texture("textures/sun.jpg", 0), "texSun" };
+	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 7.0f, Texture("textures/sun.jpg", 0), "texSun" };
 	
 	const int NUM_PLANETS = 8;
 	std::array<Planet, 8> planets = { 
