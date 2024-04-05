@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "Shape.h"
+#include "BaseShape.h"
 
-void Shape::bind() {
+void BaseShape::bind() {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -28,7 +28,7 @@ void Shape::bind() {
 	glBindVertexArray(0);
 }
 
-void Shape::draw() const {
+void BaseShape::draw() {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);

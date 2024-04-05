@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../util/Shader.h"
+#include "base_models/Cube.h"
 
 class RoomWithLamp
 {
@@ -12,6 +13,7 @@ public:
 private:
 	Shader shader;
 	glm::vec3 lightPosition;
+	Cube room;
 	
 };
 

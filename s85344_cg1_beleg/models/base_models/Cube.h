@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Shape.h"
+#include "BaseShape.h"
 
-class Cube : public Shape
+class Cube : public BaseShape
 {
 protected:
 	void createShape() final;

@@ -6,6 +6,8 @@
 #include <glm.hpp>
 #include <freeglut.h>
 
+#include "../AbstractShape.h"
+
 #define PI 3.14150
 
 struct Vertex {
@@ -14,7 +16,7 @@ struct Vertex {
 	glm::vec2 texCoord;
 };
 
-class Shape {
+class BaseShape : AbstractShape {
 private:
 	GLuint VAO;
 	GLuint VBO;
@@ -26,9 +28,9 @@ protected:
 	std::vector<GLuint> indices;
 
 public:
-	Shape() = default;
-	virtual ~Shape() = default;
+	BaseShape() = default;
+	virtual ~BaseShape() = default;
 	
 	void bind();
-	void draw() const;
+	void draw() override;
 };

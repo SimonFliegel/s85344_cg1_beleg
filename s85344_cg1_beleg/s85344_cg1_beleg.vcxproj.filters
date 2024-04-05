@@ -21,7 +21,7 @@
     <ClCompile Include="models\base_models\Cube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="models\base_models\Shape.cpp">
+    <ClCompile Include="models\base_models\BaseShape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="models\base_models\Sphere.cpp">
@@ -60,7 +60,7 @@
     <ClInclude Include="models\base_models\Cube.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="models\base_models\Shape.h">
+    <ClInclude Include="models\base_models\BaseShape.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="models\base_models\Sphere.h">
@@ -88,6 +88,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="models\Lamp.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="models\AbstractShape.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

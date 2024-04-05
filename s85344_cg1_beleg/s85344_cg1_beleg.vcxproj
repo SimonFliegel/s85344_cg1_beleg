@@ -151,7 +151,7 @@
     <ClCompile Include="util\FlyCamera.cpp" />
     <ClCompile Include="models\base_models\Cube.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="models\base_models\Shape.cpp" />
+    <ClCompile Include="models\base_models\BaseShape.cpp" />
     <ClCompile Include="models\base_models\Sphere.cpp" />
     <ClCompile Include="models\base_models\Plain.cpp" />
     <ClCompile Include="models\SolarSystem.cpp" />
@@ -161,6 +161,7 @@
     <None Include="shaders\vertexShader.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="models\AbstractShape.h" />
     <ClInclude Include="models\Lamp.h" />
     <ClInclude Include="models\base_models\Cylinder.h" />
     <ClInclude Include="models\RoomWithLamp.h" />
@@ -168,7 +169,7 @@
     <ClInclude Include="util\Texture.h" />
     <ClInclude Include="util\FlyCamera.h" />
     <ClInclude Include="models\base_models\Cube.h" />
-    <ClInclude Include="models\base_models\Shape.h" />
+    <ClInclude Include="models\base_models\BaseShape.h" />
     <ClInclude Include="models\base_models\Sphere.h" />
     <ClInclude Include="models\base_models\Plain.h" />
     <ClInclude Include="models\SolarSystem.h" />
