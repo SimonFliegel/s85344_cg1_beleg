@@ -2,12 +2,12 @@
 
 // @see: http://www.songho.ca/opengl/gl_sphere.html
 void Sphere::createShape() {
-	const float radius = 0.5f;
-	const int RESOLUTION = 20;
+	const float RADIUS = 0.5f;
+	const int RESOLUTION = 50;
 
 	float x, y, z, xy;
 	float normalX, normalY, normalZ;
-	float lengthInv = 1.0f / radius;
+	float lengthInv = 1.0f / RADIUS;
 	float textureX, textureY;
 
 	float sectorStep = 2 * PI / RESOLUTION;
@@ -16,8 +16,8 @@ void Sphere::createShape() {
 
 	for (int i = 0; i <= RESOLUTION; ++i) { // iterate over longitude lines
 		stackAngle = PI / 2 - i * stackStep;
-		xy = radius * cosf(stackAngle);
-		z = radius * sinf(stackAngle);
+		xy = RADIUS * cosf(stackAngle);
+		z = RADIUS * sinf(stackAngle);
 
 		for (int j = 0; j <= RESOLUTION; ++j) { // iterate over latitude lines
 			sectorAngle = j * sectorStep;

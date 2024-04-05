@@ -143,6 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="models\Lamp.cpp" />
+    <ClCompile Include="models\base_models\Cylinder.cpp" />
+    <ClCompile Include="models\RoomWithLamp.cpp" />
     <ClCompile Include="util\Shader.cpp" />
     <ClCompile Include="util\Texture.cpp" />
     <ClCompile Include="util\FlyCamera.cpp" />
@@ -158,6 +161,9 @@
     <None Include="shaders\vertexShader.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="models\Lamp.h" />
+    <ClInclude Include="models\base_models\Cylinder.h" />
+    <ClInclude Include="models\RoomWithLamp.h" />
     <ClInclude Include="util\Shader.h" />
     <ClInclude Include="util\Texture.h" />
     <ClInclude Include="util\FlyCamera.h" />

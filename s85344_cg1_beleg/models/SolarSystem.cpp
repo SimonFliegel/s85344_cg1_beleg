@@ -6,6 +6,7 @@
 
 SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 {
+	shader.use();
 	sphere.bind();
 
 	// texture uniforms
@@ -90,4 +91,9 @@ void SolarSystem::applyLighting()
 {
 	shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); // white light
 	// TODO
+}
+
+glm::vec3 SolarSystem::getLightPosition() const
+{
+	return sun.position;
 }

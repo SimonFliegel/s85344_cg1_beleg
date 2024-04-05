@@ -39,6 +39,10 @@ const char* const SOLARSYSTEM_FRAGMENT_SHADER = "shaders/solarSystem.fs";
 std::unique_ptr<Shader> shader;
 std::unique_ptr<Shader> solarSystemShader;
 
+// textures
+const char* const WOOD_TEXTURE = "textures/wood.jpg";
+std::unique_ptr<Texture> woodTexture;
+
 // camera
 FlyCamera flyCamera;
 //bool mouseMovedByUser = true;
@@ -46,7 +50,7 @@ float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
 // models
-const Cube cube;
+Cube cube = Cube();
 const Sphere sphere;
 const Plain plain;
 std::unique_ptr<SolarSystem> solarSystem;
@@ -78,13 +82,14 @@ void init(void)
 	shader = std::make_unique<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
 	solarSystemShader = std::make_unique<Shader>(VERTEX_SHADER, SOLARSYSTEM_FRAGMENT_SHADER);
 
+	woodTexture = std::make_unique<Texture>(WOOD_TEXTURE, 10);
+
 	flyCamera = FlyCamera();
 
 	std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
 	std::cout << "OpenGL Version:  " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL Version:    " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-	solarSystemShader->use();
 	solarSystem = std::make_unique<SolarSystem>(*solarSystemShader);
 }
 
@@ -104,14 +109,36 @@ void display(void)
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
+	
+	glm::vec3 sunPos = solarSystem->getLightPosition();
+
+	// draw solar system
+	solarSystemShader->use();
 	solarSystemShader->setMat4("view", view);
 	solarSystemShader->setMat4("projection", projection);
 
-	// draw solar system
-	model = glm::mat4(1.0f);
-	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-	solarSystemShader->setMat4("model", model);
+	glm::mat4 modelSolarSystem = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+	solarSystemShader->setMat4("model", modelSolarSystem);
 	solarSystem->draw(deltaTime);
+	// update light position
+	sunPos = projection * view * modelSolarSystem * glm::vec4(sunPos, 1.0f);
+
+	
+	// draw cube
+	glm::mat4 modelCube = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+	shader->use();
+	shader->setMat4("view", view);
+	shader->setMat4("projection", projection);
+	shader->setMat4("model", modelCube);
+
+	shader->setInt("texWood", 10);
+	woodTexture->bind();
+
+	shader->setVec3("lightPos", sunPos);
+	shader->setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	cube.bind();
+	cube.draw();
 
 	glFlush();
 }
@@ -173,11 +200,12 @@ int main(int argc, char** argv)
 	init();
 
 	// settings
-	/*glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
+	//glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
+	glDepthFunc(GL_LESS);
+	//glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);

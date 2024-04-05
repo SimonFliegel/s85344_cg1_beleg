@@ -33,6 +33,7 @@ class SolarSystem
 public:
 	explicit SolarSystem(const Shader& shader);
 	void draw(float deltaTime);
+	glm::vec3 getLightPosition() const;
 
 private:
 	Shader shader;
@@ -41,7 +42,7 @@ private:
 	const float SPEED = 1.0f; // used as a multiplier for the orbiting motion (dependent on FPS)
 	Sphere sphere = Sphere();
 
-	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 7.0f, Texture("textures/sun.jpg", 0), "texSun" };
+	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, Texture("textures/sun.jpg", 0), "texSun" };
 	
 	const int NUM_PLANETS = 8;
 	std::array<Planet, 8> planets = { 

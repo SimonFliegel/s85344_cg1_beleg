@@ -42,6 +42,15 @@
     <ClCompile Include="util\Shader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="models\base_models\Cylinder.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="models\RoomWithLamp.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="models\Lamp.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.fs" />
@@ -70,6 +79,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="util\Shader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="models\base_models\Cylinder.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="models\RoomWithLamp.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="models\Lamp.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
