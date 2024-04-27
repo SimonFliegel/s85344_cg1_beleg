@@ -20,6 +20,5 @@ void main() {
 	// normal matrix to transform normals for non-uniform scaling (not needed in this case)
 	normal = mat3(transpose(inverse(model))) * aNormal; 
 	
-	normal = mat3(model) * aNormal;
 	texCoord = vec2(aTexCoord.x, aTexCoord.y);
 }

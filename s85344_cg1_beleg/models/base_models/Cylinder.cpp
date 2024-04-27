@@ -101,6 +101,7 @@ void Cylinder::createVertices() {
             v.position = glm::vec3(x, y, z);
             v.normal = glm::vec3(normalX, normalY, normalZ);
             v.texCoord = glm::vec2(textureX, textureY);
+            vertices.push_back(v);
         }
     }
 }

@@ -21,7 +21,7 @@ void main() {
 
     // ambient
     float ambientStrength = 0.1f;
-    float specularStrength = 0.5f;
+    float specularStrength = 0.6f;
 
     vec3 ambient = ambientStrength * lightColor;
 
@@ -33,12 +33,12 @@ void main() {
 
     // specular
     vec3 viewDir = normalize(viewPos - fragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);  
+    vec3 reflectDir = reflect(-lightDir, norm); 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
-
-    vec3 lightResult = ambient + diffuse;
-
+        
+    vec3 lightResult = ambient + diffuse + specular;
+    
     vec4 texColor;
 
     if (objectId == 0) {
@@ -47,14 +47,13 @@ void main() {
         texColor = texture(texMetal, texCoord);
     } else if (objectId == 2) {
         texColor = texture(texLight, texCoord);
+    } else {
+        texColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); // red (debugging)
     }
-
+    
     if (objectId == 2) { // light source
-        diffuse = vec3(1.0f, 1.0f, 1.0f);
+        lightResult = lightColor;
     }
 
     fragColor = texColor * vec4(lightResult, 1.0f);
-
-    //fragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); // red (debugging)
-
 }

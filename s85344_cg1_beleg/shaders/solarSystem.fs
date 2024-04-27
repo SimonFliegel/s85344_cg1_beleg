@@ -58,7 +58,7 @@ void main() {
     }
     
     if (sphereId == 0) { // light source
-        lightResult = vec3(1.0f, 1.0f, 1.0f); // not affected by lighting conditions
+        lightResult = lightColor; // not affected by lighting conditions
     }
 
     fragColor = texColor * vec4(lightResult, 1.0f);
