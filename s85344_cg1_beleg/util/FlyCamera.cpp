@@ -13,7 +13,7 @@ FlyCamera::FlyCamera(float yaw, float pitch, float zoom, float speed, float sens
 	firstMouse = true;
 
 	// @TODO: make these configurable?
-	position = glm::vec3(0.0f, 0.0f, 3.0f);
+	position = glm::vec3(0.0f, 0.0f, 1.0f);
 	front = glm::vec3(0.0f, 0.0f, -1.0f);
 	up = glm::vec3(0.0f, 1.0f, 0.0f);
 	worldUp = up;
@@ -77,6 +77,11 @@ void FlyCamera::processScrollInput(int dir)
 glm::mat4 FlyCamera::getViewMatrix() const
 {
 	return glm::lookAt(position, position + front, up);
+}
+
+glm::vec3 FlyCamera::getPosition() const
+{
+	return position;
 }
 
 float FlyCamera::getZoom() const

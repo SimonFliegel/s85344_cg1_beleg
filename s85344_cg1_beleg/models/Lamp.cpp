@@ -8,6 +8,7 @@ Lamp::Lamp(const Shader& shader)
 	shader.use();
 	shader.setInt(METAL_TEXTURE_LOC, standTexture.getTextureUnit());
 	shader.setInt(LIGHT_TEXTURE_LOC, lightTexture.getTextureUnit());
+	setLight(true);
 }
 
 void Lamp::draw(glm::mat4 model) {
@@ -44,19 +45,20 @@ void Lamp::draw(glm::mat4 model) {
 	modelLightBulb = glm::scale(modelLightBulb, glm::vec3(0.4f, 0.15f, 0.4f));
 	shader.setMat4("model", modelLightBulb);
 
+	lightPos = glm::vec3(modelLightBulb * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
 	lightBulb.draw();
 	lightTexture.unbind();
 }
 
-void Lamp::toggleLight() {
-	if (lightOn) {
-		lightOn = false;
+void Lamp::setLight(bool state) {
+	const std::string LIGHT_COLOR_LOC = "lightColor";
+	const glm::vec3 LIGHT_COLOR_OFF = glm::vec3(0.0f, 0.0f, 0.0f);
 
-		// TODO
+	if (state) {
+		shader.setVec3(LIGHT_COLOR_LOC, lightColor);
 	} else {
-		lightOn = true;
-
-		// TODO
+		shader.setVec3(LIGHT_COLOR_LOC, LIGHT_COLOR_OFF);
 	}
 }
 

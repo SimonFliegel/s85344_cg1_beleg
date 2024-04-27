@@ -24,6 +24,7 @@ SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 void SolarSystem::draw(glm::mat4 model, float deltaTime)
 {
 	drawSolarSystem(model, deltaTime, false);
+	sunPosition = glm::vec3(model * glm::vec4(sun.position, 1.0f));
 }
 
 void SolarSystem::drawSolarSystem(glm::mat4 model, float deltaTime, bool isFirstDraw) {
@@ -94,5 +95,5 @@ void SolarSystem::applyLighting()
 
 glm::vec3 SolarSystem::getLightPosition() const
 {
-	return sun.position;
+	return sunPosition;
 }

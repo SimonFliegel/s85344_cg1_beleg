@@ -12,6 +12,7 @@ class RoomWithLamp : private AbstractShape
 public:
 	explicit RoomWithLamp(const Shader& shader);
 	void draw(glm::mat4 model) override;
+	void toggleLight();
 	glm::vec3 getLightPosition() const;
 
 private:
@@ -20,5 +21,6 @@ private:
 	glm::vec3 lightPosition;
 	Lamp lamp = Lamp(shader);
 	Cube room;
+	bool lightOn = true;
 };
 

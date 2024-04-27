@@ -53,6 +53,8 @@ float lastFrame = 0.0f;
 std::unique_ptr<SolarSystem> solarSystem;
 std::unique_ptr<RoomWithLamp> roomWithLamp;
 
+// function declarations
+void drawScene(float deltaTime, glm::mat4 model, glm::mat4 view, glm::mat4 projection, glm::vec3 camPos);
 
 
 // updateInterval in seconds
@@ -102,27 +104,33 @@ void display(void)
 	displayFps(1.0f);
 	
 	// cam setup
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 2.0f));
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	//glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
-	
-	glm::vec3 sunPos = solarSystem->getLightPosition();
+	drawScene(deltaTime, model, view, projection, flyCamera.getPosition());
 
-	// draw solar system
+	glFlush();
+}
+
+void drawScene(float deltaTime, glm::mat4 model, glm::mat4 view, glm::mat4 projection, glm::vec3 camPos) {
+
+	// ####################### draw solar system #######################
 	solarSystemShader->use();
 	solarSystemShader->setMat4("view", view);
 	solarSystemShader->setMat4("projection", projection);
 
 	glm::mat4 modelSolarSystem = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
-	modelSolarSystem = glm::rotate(modelSolarSystem, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 1.0f));
+	modelSolarSystem = glm::rotate(modelSolarSystem, glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.5f));
 	solarSystemShader->setMat4("model", modelSolarSystem);
 	solarSystem->draw(modelSolarSystem, deltaTime);
+
 	// update light position
-	sunPos = projection * view * modelSolarSystem * glm::vec4(sunPos, 1.0f);
+	solarSystemShader->setVec3("lightPos", solarSystem->getLightPosition());
 
 
-	// draw room with lamp
+	// ####################### draw room with lamp #######################
 	roomWithLampShader->use();
 	roomWithLampShader->setMat4("view", view);
 	roomWithLampShader->setMat4("projection", projection);
@@ -130,9 +138,11 @@ void display(void)
 	glm::mat4 modelRoom = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	roomWithLampShader->setMat4("model", modelRoom);
 	roomWithLamp->draw(modelRoom);
-
-	glFlush();
+	// update light position
+	roomWithLampShader->setVec3("lightPos", roomWithLamp->getLightPosition());
+	roomWithLampShader->setVec3("viewPos", camPos);
 }
+
 
 void reshape(int w, int h) 
 {

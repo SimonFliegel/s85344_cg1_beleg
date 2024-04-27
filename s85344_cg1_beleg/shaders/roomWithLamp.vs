@@ -18,7 +18,7 @@ void main() {
 	fragPos = vec3(model * vec4(aPosition, 1.0f));
 	
 	// normal matrix to transform normals for non-uniform scaling (not needed in this case)
-	// normal = mat3(transpose(inverse(model))) * aNormal; 
+	normal = mat3(transpose(inverse(model))) * aNormal; 
 	
 	normal = mat3(model) * aNormal;
 	texCoord = vec2(aTexCoord.x, aTexCoord.y);

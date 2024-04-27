@@ -42,6 +42,7 @@ private:
 	int sphereIdLoc;
 	const float SPEED = 1.0f; // used as a multiplier for the orbiting motion (dependent on FPS)
 	Sphere sphere = Sphere();
+	glm::vec3 sunPosition;
 
 	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, Texture("textures/sun.jpg", 0), "texSun" };
 	

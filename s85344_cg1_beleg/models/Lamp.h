@@ -15,15 +15,15 @@ class Lamp : AbstractShape
 public:
 	explicit Lamp(const Shader&);
 	void draw(glm::mat4 model);
-	void toggleLight();
+	void setLight(bool state);
 	glm::vec3 getLightPosition() const;
 private:
 	const Shader& shader;
 	const Texture standTexture = Texture(METAL_TEXTURE, 11);
 	const Texture lightTexture = Texture(LIGHT_TEXTURE, 12);
+	const glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	Cylinder cylinder;
 	Sphere lightBulb;
 	glm::vec3 lightPos;
-	bool lightOn = true;
 };
 

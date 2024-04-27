@@ -28,6 +28,7 @@ public:
 	void processMouseInput(int xPos, int yPos);
 	void processScrollInput(int dir);
 	glm::mat4 getViewMatrix() const;
+	glm::vec3 getPosition() const;	
 	float getZoom() const;
 
 private:

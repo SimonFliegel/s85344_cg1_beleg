@@ -30,11 +30,21 @@ void RoomWithLamp::draw(glm::mat4 model)
 	shader.setMat4("model", modelLamp);
 	lamp.draw(modelLamp);
 
-	lightPosition = glm::vec3(modelLamp * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	//shader.setVec3("lightPos", lamp.getLightPosition());
-	//shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightPosition = modelLamp * glm::vec4(lamp.getLightPosition(), 1.0f);
+}
 
-
+void RoomWithLamp::toggleLight()
+{
+	if (lightOn)
+	{
+		lamp.setLight(false);
+		lightOn = false;
+	}
+	else
+	{
+		lamp.setLight(true);
+		lightOn = true;
+	}
 }
 
 glm::vec3 RoomWithLamp::getLightPosition() const
