@@ -13,11 +13,11 @@
 #include <glew.h>
 #include <freeglut.h>
 
-#include "models/base_models/Shape.h";
 #include "models/base_models/Cube.h";
 #include "models/base_models/Sphere.h";
 #include "models/base_models/Plain.h"
 #include "models/SolarSystem.h";
+#include "models/RoomWithLamp.h";
 
 #include "util/FlyCamera.h";
 #include "util/Shader.h";
@@ -33,15 +33,15 @@ GLint windowWidth = 800;
 GLint windowHeight = 600;
 
 // shaders
-const char* const VERTEX_SHADER = "shaders/vertexShader.vs";
-const char* const FRAGMENT_SHADER = "shaders/fragmentShader.fs";
-const char* const SOLARSYSTEM_FRAGMENT_SHADER = "shaders/solarSystem.fs";
-std::unique_ptr<Shader> shader;
-std::unique_ptr<Shader> solarSystemShader;
+const char* const ROOM_WITH_LAMP_VS = "shaders/roomWithLamp.vs";
+const char* const ROOM_WITH_LAMP_FS = "shaders/roomWithLamp.fs";
+const char* const SOLARSYSTEM_VS= "shaders/solarSystem.vs";
+const char* const SOLARSYSTEM_FS = "shaders/solarSystem.fs";
 
-// textures
-const char* const WOOD_TEXTURE = "textures/wood.jpg";
-std::unique_ptr<Texture> woodTexture;
+std::unique_ptr<Shader> roomWithLampShader;
+std::unique_ptr<Shader> solarSystemShader;
+Cylinder cylinder;
+
 
 // camera
 FlyCamera flyCamera;
@@ -50,10 +50,8 @@ float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
 // models
-Cube cube = Cube();
-const Sphere sphere;
-const Plain plain;
 std::unique_ptr<SolarSystem> solarSystem;
+std::unique_ptr<RoomWithLamp> roomWithLamp;
 
 
 
@@ -79,10 +77,8 @@ void init(void)
 {
 	displayFps(0.0f); // initial call to update window title
 
-	shader = std::make_unique<Shader>(VERTEX_SHADER, FRAGMENT_SHADER); // needs to be here, because of glewInit
-	solarSystemShader = std::make_unique<Shader>(VERTEX_SHADER, SOLARSYSTEM_FRAGMENT_SHADER);
-
-	woodTexture = std::make_unique<Texture>(WOOD_TEXTURE, 10);
+	roomWithLampShader = std::make_unique<Shader>(ROOM_WITH_LAMP_VS, ROOM_WITH_LAMP_FS); // needs to be here, because of glewInit
+	solarSystemShader = std::make_unique<Shader>(SOLARSYSTEM_VS, SOLARSYSTEM_FS);
 
 	flyCamera = FlyCamera();
 
@@ -91,6 +87,7 @@ void init(void)
 	std::cout << "GLSL Version:    " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
 	solarSystem = std::make_unique<SolarSystem>(*solarSystemShader);
+	roomWithLamp = std::make_unique<RoomWithLamp>(*roomWithLampShader);
 }
 
 void display(void)
@@ -104,8 +101,8 @@ void display(void)
 
 	displayFps(1.0f);
 	
-	// maybe extract to method?
-	glm::mat4 model = glm::mat4(1.0f);
+	// cam setup
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 2.0f));
 	glm::mat4 view = flyCamera.getViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 	
@@ -117,14 +114,22 @@ void display(void)
 	solarSystemShader->setMat4("view", view);
 	solarSystemShader->setMat4("projection", projection);
 
-	glm::mat4 modelSolarSystem = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+	glm::mat4 modelSolarSystem = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+	modelSolarSystem = glm::rotate(modelSolarSystem, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 1.0f));
 	solarSystemShader->setMat4("model", modelSolarSystem);
-	solarSystem->draw(deltaTime);
+	solarSystem->draw(modelSolarSystem, deltaTime);
 	// update light position
 	sunPos = projection * view * modelSolarSystem * glm::vec4(sunPos, 1.0f);
 
-	
-	
+
+	// draw room with lamp
+	roomWithLampShader->use();
+	roomWithLampShader->setMat4("view", view);
+	roomWithLampShader->setMat4("projection", projection);
+
+	glm::mat4 modelRoom = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	roomWithLampShader->setMat4("model", modelRoom);
+	roomWithLamp->draw(modelRoom);
 
 	glFlush();
 }

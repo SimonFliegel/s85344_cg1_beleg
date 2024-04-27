@@ -1,2 +1,65 @@
+#include <gtx/transform.hpp>
+
 #include "Lamp.h"
 
+Lamp::Lamp(const Shader& shader)
+	: shader(shader)
+{
+	shader.use();
+	shader.setInt(METAL_TEXTURE_LOC, standTexture.getTextureUnit());
+	shader.setInt(LIGHT_TEXTURE_LOC, lightTexture.getTextureUnit());
+}
+
+void Lamp::draw(glm::mat4 model) {
+	const std::string OBJECT_ID = "objectId";
+	shader.use();
+
+	shader.setInt(OBJECT_ID, 1);
+	standTexture.bind();
+	cylinder.bind();
+
+	// stand
+	glm::mat4 modelStand = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
+	modelStand = glm::rotate(modelStand, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelStand = glm::scale(modelStand, glm::vec3(0.25f, 0.25f, 0.075f));
+	shader.setMat4("model", modelStand);
+
+	cylinder.draw();
+
+	// arm
+	glm::mat4 modelArm = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelArm = glm::scale(modelArm, glm::vec3(0.05f, 0.05f, 1.0f)); // make it thin
+	shader.setMat4("model", modelArm);
+
+	cylinder.draw();
+	standTexture.unbind();
+
+	// light bulb
+	shader.setInt(OBJECT_ID, 2);
+	lightTexture.bind();
+	lightBulb.bind();
+
+	lightPos = glm::vec3(0.0f, 0.5f, 0.0f);
+	glm::mat4 modelLightBulb = glm::translate(model, lightPos);
+	modelLightBulb = glm::scale(modelLightBulb, glm::vec3(0.4f, 0.15f, 0.4f));
+	shader.setMat4("model", modelLightBulb);
+
+	lightBulb.draw();
+	lightTexture.unbind();
+}
+
+void Lamp::toggleLight() {
+	if (lightOn) {
+		lightOn = false;
+
+		// TODO
+	} else {
+		lightOn = true;
+
+		// TODO
+	}
+}
+
+glm::vec3 Lamp::getLightPosition() const {
+	return lightPos;
+}

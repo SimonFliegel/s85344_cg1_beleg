@@ -28,9 +28,49 @@ void BaseShape::bind() {
 	glBindVertexArray(0);
 }
 
-void BaseShape::draw() {
+
+void BaseShape::draw(glm::mat4 model) {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
+}
+
+void BaseShape::drawPolygonMode(glm::mat4 model) {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+/*************************** debug ******************************/
+
+void BaseShape::printVerticesInIndexedOrder() const {
+	for (const auto& index : indices) {
+		std::cout << "Position: " << vertices[index].position.x << ", " << vertices[index].position.y << ", " << vertices[index].position.z << std::endl;
+		std::cout << "Normal: " << vertices[index].normal.x << ", " << vertices[index].normal.y << ", " << vertices[index].normal.z << std::endl;
+		std::cout << "TexCoord: " << vertices[index].texCoord.x << ", " << vertices[index].texCoord.y << std::endl;
+	}
+}
+
+void BaseShape::printPositionVerticesInIndexedOrder() const {
+	for (const auto& index : indices) {
+		std::cout << vertices[index].position.x << " " << vertices[index].position.y << " " << vertices[index].position.z << std::endl;
+	}
+}
+
+void BaseShape::printVertices() const {
+	for (const auto& vertex : vertices) {
+		std::cout << "Position: " << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z << std::endl;
+		std::cout << "Normal: " << vertex.normal.x << ", " << vertex.normal.y << ", " << vertex.normal.z << std::endl;
+		std::cout << "TexCoord: " << vertex.texCoord.x << ", " << vertex.texCoord.y << std::endl;
+	}
+}
+
+void BaseShape::printPositionVertices() const {
+	for (const auto& vertex : vertices) {
+		std::cout << vertex.position.x << " " << vertex.position.y << " " << vertex.position.z << std::endl;
+	}
 }
 

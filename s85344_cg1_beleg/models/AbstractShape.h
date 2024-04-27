@@ -5,6 +5,6 @@ class AbstractShape
 public:
 	AbstractShape() = default;
 	virtual ~AbstractShape() = default;
-	virtual void draw() = 0;
+	virtual void draw(glm::mat4 model) = 0;
 };
 

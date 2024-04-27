@@ -2,18 +2,23 @@
 
 #include "../util/Shader.h"
 #include "base_models/Cube.h"
+#include "Lamp.h"
 
-class RoomWithLamp
+const char* const ROOM_TEXTURE = "textures/wood.jpg";
+const char* const ROOM_TEXTURE_LOC = "texWood";
+
+class RoomWithLamp : private AbstractShape
 {
 public:
 	explicit RoomWithLamp(const Shader& shader);
-	void draw();
+	void draw(glm::mat4 model) override;
 	glm::vec3 getLightPosition() const;
 
 private:
-	Shader shader;
+	const Shader& shader;
+	const Texture roomTexture = Texture(ROOM_TEXTURE, 10);
 	glm::vec3 lightPosition;
+	Lamp lamp = Lamp(shader);
 	Cube room;
-	
 };
 

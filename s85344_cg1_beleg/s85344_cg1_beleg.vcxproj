@@ -157,10 +157,13 @@
     <ClCompile Include="models\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fragmentShader.fs" />
-    <None Include="shaders\vertexShader.vs" />
+    <None Include="shaders\roomWithLamp.fs" />
+    <None Include="shaders\solarSystem.fs" />
+    <None Include="shaders\solarSystem.vs" />
+    <None Include="shaders\roomWithLamp.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="models\AnimatedAbstractShape.h" />
     <ClInclude Include="models\AbstractShape.h" />
     <ClInclude Include="models\Lamp.h" />
     <ClInclude Include="models\base_models\Cylinder.h" />
@@ -173,6 +176,20 @@
     <ClInclude Include="models\base_models\Sphere.h" />
     <ClInclude Include="models\base_models\Plain.h" />
     <ClInclude Include="models\SolarSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\earth.jpg" />
+    <Image Include="textures\jupiter.jpg" />
+    <Image Include="textures\light.jpg" />
+    <Image Include="textures\mars.jpg" />
+    <Image Include="textures\mercury.jpg" />
+    <Image Include="textures\metal.jpg" />
+    <Image Include="textures\neptune.jpg" />
+    <Image Include="textures\saturn.jpg" />
+    <Image Include="textures\sun.jpg" />
+    <Image Include="textures\uranus.jpg" />
+    <Image Include="textures\venus.jpg" />
+    <Image Include="textures\wood.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

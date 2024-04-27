@@ -18,15 +18,15 @@ SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 	}
 
 	applyLighting();
-	drawSolarSystem(0.0f, true); // initial draw to bind textures
+	drawSolarSystem(glm::mat4(1.0f), 0.0f, true); // initial draw to bind textures
 }
 
-void SolarSystem::draw(float deltaTime)
+void SolarSystem::draw(glm::mat4 model, float deltaTime)
 {
-	drawSolarSystem(deltaTime, false);
+	drawSolarSystem(model, deltaTime, false);
 }
 
-void SolarSystem::drawSolarSystem(float deltaTime, bool isFirstDraw) {
+void SolarSystem::drawSolarSystem(glm::mat4 model, float deltaTime, bool isFirstDraw) {
 	const std::string SPHERE_ID = "sphereId";
 
 	// sun
@@ -35,14 +35,14 @@ void SolarSystem::drawSolarSystem(float deltaTime, bool isFirstDraw) {
 	}
 
 	float sunRotationAngle = sun.rotationAngle + sun.rotationSpeed * SPEED * deltaTime;
-
-	auto model = glm::mat4(1.0f);
-	model = glm::translate(model, sun.position);
-	model = glm::rotate(model, sunRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(sun.size, sun.size, sun.size));
+	
+	glm::mat4 modelSun = model;
+	modelSun = glm::translate(modelSun, sun.position);
+	modelSun = glm::rotate(modelSun, sunRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelSun = glm::scale(modelSun, glm::vec3(sun.size, sun.size, sun.size));
 
 	shader.setInt(SPHERE_ID, 0);
-	shader.setMat4("model", model);
+	shader.setMat4("model", modelSun);
 	sphere.draw();
 
 	// update angle
@@ -53,7 +53,7 @@ void SolarSystem::drawSolarSystem(float deltaTime, bool isFirstDraw) {
 		if (isFirstDraw) {
 			planets[i].texture.bind();
 		}
-		model = glm::mat4(1.0f);
+		glm::mat4 modelPlanet = model;
 
 		Planet planet = planets[i];
 		float planetOrbitAngle = planet.orbitAngle + planet.orbitalSpeed * SPEED * deltaTime;
@@ -61,12 +61,12 @@ void SolarSystem::drawSolarSystem(float deltaTime, bool isFirstDraw) {
 		constraintAngle(planetOrbitAngle);
 		constraintAngle(planetRotationAngle);
 
-		model = glm::translate(model, glm::vec3(planet.radius * cos(planetOrbitAngle), planet.radius * sin(planetOrbitAngle), 0.0f));
-		model = glm::rotate(model, planetRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(planet.size, planet.size, planet.size));
+		modelPlanet = glm::translate(modelPlanet, glm::vec3(planet.radius * cos(planetOrbitAngle), planet.radius * sin(planetOrbitAngle), 0.0f));
+		modelPlanet = glm::rotate(modelPlanet, planetRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelPlanet = glm::scale(modelPlanet, glm::vec3(planet.size, planet.size, planet.size));
 		
 		shader.setInt(SPHERE_ID, i+1);
-		shader.setMat4("model", model);
+		shader.setMat4("model", modelPlanet);
 		sphere.draw();
 		
 		// update angles
@@ -90,7 +90,6 @@ void SolarSystem::drawSaturn(float deltaTime, bool firstDraw)
 void SolarSystem::applyLighting()
 {
 	shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); // white light
-	// TODO
 }
 
 glm::vec3 SolarSystem::getLightPosition() const

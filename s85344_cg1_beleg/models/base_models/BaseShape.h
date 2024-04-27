@@ -16,7 +16,7 @@ struct Vertex {
 	glm::vec2 texCoord;
 };
 
-class BaseShape : AbstractShape {
+class BaseShape : private AbstractShape {
 private:
 	GLuint VAO;
 	GLuint VBO;
@@ -32,5 +32,12 @@ public:
 	virtual ~BaseShape() = default;
 	
 	void bind();
-	void draw() override;
+	void draw(glm::mat4 model = glm::mat4(1.0f)) override; // inherited from AbstractShape
+	void drawPolygonMode(glm::mat4 model = glm::mat4(1.0f)); // draw in wireframe mode (only for base shapes available)
+
+	/*************************** debug ******************************/
+	void printVerticesInIndexedOrder() const;
+	void printPositionVerticesInIndexedOrder() const;
+	void printVertices() const;
+	void printPositionVertices() const;
 };

@@ -3,6 +3,7 @@
 #include <array>
 #include <memory>
 
+#include "AnimatedAbstractShape.h"
 #include "base_models/Sphere.h";
 #include "../util/Texture.h";
 #include "../util/Shader.h"
@@ -28,11 +29,11 @@ struct Planet {
 	const char* textureLoc;
 };
 
-class SolarSystem
+class SolarSystem : private AnimatedAbstractShape
 {
 public:
 	explicit SolarSystem(const Shader& shader);
-	void draw(float deltaTime);
+	void draw(glm::mat4 model, float deltaTime) override;
 	glm::vec3 getLightPosition() const;
 
 private:
@@ -57,7 +58,7 @@ private:
 		Planet{	1.0f,	0.0f,		0.3f,			0.0f,			1.5f,			0.15f,	Texture("textures/neptune.jpg", 8), "texNeptune"}
 	};
 
-	void drawSolarSystem(float deltaTime, bool firstDraw);
+	void drawSolarSystem(glm::mat4 model, float deltaTime, bool firstDraw);
 	void drawSaturn(float deltaTime, bool firstDraw);
 	void constraintAngle(float& angle) const;
 	void applyLighting();
