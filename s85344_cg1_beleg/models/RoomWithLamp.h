@@ -1,11 +1,10 @@
 #pragma once
 
 #include "../util/Shader.h"
-#include "base_models/Cube.h"
+#include "Room.h"
 #include "Lamp.h"
 
-const char* const ROOM_TEXTURE = "textures/wood.jpg";
-const char* const ROOM_TEXTURE_LOC = "texWood";
+const char* const OBJECT_ID_LOC = "objectId";
 
 class RoomWithLamp : private AbstractShape
 {
@@ -17,10 +16,9 @@ public:
 
 private:
 	const Shader& shader;
-	const Texture roomTexture = Texture(ROOM_TEXTURE, 10);
 	glm::vec3 lightPosition;
-	Lamp lamp = Lamp(shader);
-	Cube room;
+	Lamp lamp = Lamp(shader, OBJECT_ID_LOC);
+	Room room = Room(shader, OBJECT_ID_LOC);
 	bool lightOn = true;
 };
 

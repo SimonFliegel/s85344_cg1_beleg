@@ -13,14 +13,17 @@ const char* const LIGHT_TEXTURE_LOC = "texLight";
 class Lamp : AbstractShape
 {
 public:
-	explicit Lamp(const Shader&);
+	explicit Lamp(const Shader&, const char* const objectIdLoc);
 	void draw(glm::mat4 model);
 	void setLight(bool state);
 	glm::vec3 getLightPosition() const;
 private:
 	const Shader& shader;
-	const Texture standTexture = Texture(METAL_TEXTURE, 11);
-	const Texture lightTexture = Texture(LIGHT_TEXTURE, 12);
+	const char* const objectIdLoc;
+	const int STAND_AND_ARM_ID = 2;
+	const int LIGHT_BULB_ID = 3;
+	const Texture standTexture = Texture(METAL_TEXTURE, 20);
+	const Texture lightTexture = Texture(LIGHT_TEXTURE, 21);
 	const glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	Cylinder cylinder;
 	Sphere lightBulb;

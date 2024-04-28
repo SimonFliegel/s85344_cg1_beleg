@@ -4,15 +4,16 @@ in vec3 fragPos;
 in vec3 normal;
 in vec2 texCoord;
 
-uniform vec3 lightPos; // center of sun
+uniform vec3 lightPos; // light bulb position
 uniform vec3 lightColor;
 uniform vec3 viewPos;
 
-uniform sampler2D texWood; // 10
-uniform sampler2D texMetal; // 11
-uniform sampler2D texLight; // 12
+uniform sampler2D texWall; // 10
+uniform sampler2D texFloor; // 11
+uniform sampler2D texMetal; // 20
+uniform sampler2D texLight; // 21
 
-uniform int objectId; // 0: room, 1: lampstand, 2: lightbulb (light source)
+uniform int objectId; // 0: walls, 1: floor, 2: lamp stand, 3: light bulb (light source)
 
 out vec4 fragColor;
 
@@ -20,7 +21,7 @@ void main() {
     // @see https://learnopengl.com/Lighting/Basic-Lighting
 
     // ambient
-    float ambientStrength = 0.1f;
+    float ambientStrength = 0.25f;
     float specularStrength = 0.6f;
 
     vec3 ambient = ambientStrength * lightColor;
@@ -42,16 +43,18 @@ void main() {
     vec4 texColor;
 
     if (objectId == 0) {
-        texColor = texture(texWood, texCoord);
+        texColor = texture(texWall, texCoord);
     } else if (objectId == 1) {
-        texColor = texture(texMetal, texCoord);
+        texColor = texture(texFloor, texCoord);
     } else if (objectId == 2) {
+        texColor = texture(texMetal, texCoord);
+    } else if (objectId == 3) {
         texColor = texture(texLight, texCoord);
     } else {
         texColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); // red (debugging)
     }
     
-    if (objectId == 2) { // light source
+    if (objectId == 3) { // light source
         lightResult = lightColor;
     }
 

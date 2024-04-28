@@ -51,6 +51,9 @@
     <ClCompile Include="models\Lamp.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="models\Room.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\roomWithLamp.fs" />
@@ -98,6 +101,9 @@
     <ClInclude Include="models\AnimatedAbstractShape.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="models\Room.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\earth.jpg">
@@ -134,6 +140,9 @@
       <Filter>Ressourcendateien</Filter>
     </Image>
     <Image Include="textures\light.jpg">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="textures\wall.jpg">
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>

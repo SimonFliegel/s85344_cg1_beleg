@@ -146,6 +146,7 @@
     <ClCompile Include="models\Lamp.cpp" />
     <ClCompile Include="models\base_models\Cylinder.cpp" />
     <ClCompile Include="models\RoomWithLamp.cpp" />
+    <ClCompile Include="models\Room.cpp" />
     <ClCompile Include="util\Shader.cpp" />
     <ClCompile Include="util\Texture.cpp" />
     <ClCompile Include="util\FlyCamera.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="models\Lamp.h" />
     <ClInclude Include="models\base_models\Cylinder.h" />
     <ClInclude Include="models\RoomWithLamp.h" />
+    <ClInclude Include="models\Room.h" />
     <ClInclude Include="util\Shader.h" />
     <ClInclude Include="util\Texture.h" />
     <ClInclude Include="util\FlyCamera.h" />
@@ -189,6 +191,7 @@
     <Image Include="textures\sun.jpg" />
     <Image Include="textures\uranus.jpg" />
     <Image Include="textures\venus.jpg" />
+    <Image Include="textures\wall.jpg" />
     <Image Include="textures\wood.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

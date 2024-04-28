@@ -161,8 +161,10 @@ void keyboard(unsigned char key, int x, int y)
 		flyCamera.processKeyboardInput(ECameraMovementDirection::LEFT, deltaTime);
 	if (key == 'd')
 		flyCamera.processKeyboardInput(ECameraMovementDirection::RIGHT, deltaTime);
-
-	// @TODO toggle light source
+	if (key == 32) // ASCII for space
+		roomWithLamp->toggleLight();
+	if (key == 27) // ASCII for escape
+		glutLeaveMainLoop();
 
 	glutPostRedisplay();
 }

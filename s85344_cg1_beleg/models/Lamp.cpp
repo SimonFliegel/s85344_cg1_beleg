@@ -2,8 +2,8 @@
 
 #include "Lamp.h"
 
-Lamp::Lamp(const Shader& shader)
-	: shader(shader)
+Lamp::Lamp(const Shader& shader, const char* const objectIdLoc)
+	: shader(shader), objectIdLoc(objectIdLoc)
 {
 	shader.use();
 	shader.setInt(METAL_TEXTURE_LOC, standTexture.getTextureUnit());
@@ -12,14 +12,13 @@ Lamp::Lamp(const Shader& shader)
 }
 
 void Lamp::draw(glm::mat4 model) {
-	const std::string OBJECT_ID = "objectId";
 	shader.use();
 
-	shader.setInt(OBJECT_ID, 1);
+	shader.setInt(objectIdLoc, STAND_AND_ARM_ID);
 	standTexture.bind();
 	cylinder.bind();
 
-	// stand
+	// ########################### stand ############################
 	glm::mat4 modelStand = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 	modelStand = glm::rotate(modelStand, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelStand = glm::scale(modelStand, glm::vec3(0.25f, 0.25f, 0.075f));
@@ -27,7 +26,7 @@ void Lamp::draw(glm::mat4 model) {
 
 	cylinder.draw();
 
-	// arm
+	// ############################ arm #############################
 	glm::mat4 modelArm = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelArm = glm::scale(modelArm, glm::vec3(0.05f, 0.05f, 1.0f)); // make it thin
 	shader.setMat4("model", modelArm);
@@ -35,8 +34,8 @@ void Lamp::draw(glm::mat4 model) {
 	cylinder.draw();
 	standTexture.unbind();
 
-	// light bulb
-	shader.setInt(OBJECT_ID, 2);
+	// ########################## light bulb #########################
+	shader.setInt(objectIdLoc, LIGHT_BULB_ID);
 	lightTexture.bind();
 	lightBulb.bind();
 
