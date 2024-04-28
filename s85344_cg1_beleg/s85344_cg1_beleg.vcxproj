@@ -143,13 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="util\cams\FixedCamera.cpp" />
     <ClCompile Include="models\Lamp.cpp" />
     <ClCompile Include="models\base_models\Cylinder.cpp" />
     <ClCompile Include="models\RoomWithLamp.cpp" />
     <ClCompile Include="models\Room.cpp" />
     <ClCompile Include="util\Shader.cpp" />
     <ClCompile Include="util\Texture.cpp" />
-    <ClCompile Include="util\FlyCamera.cpp" />
+    <ClCompile Include="util\cams\FlyCamera.cpp" />
     <ClCompile Include="models\base_models\Cube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="models\base_models\BaseShape.cpp" />
@@ -164,6 +165,8 @@
     <None Include="shaders\roomWithLamp.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="util\cams\AbstractCamera.h" />
+    <ClInclude Include="util\cams\FixedCamera.h" />
     <ClInclude Include="models\AnimatedAbstractShape.h" />
     <ClInclude Include="models\AbstractShape.h" />
     <ClInclude Include="models\Lamp.h" />
@@ -172,7 +175,7 @@
     <ClInclude Include="models\Room.h" />
     <ClInclude Include="util\Shader.h" />
     <ClInclude Include="util\Texture.h" />
-    <ClInclude Include="util\FlyCamera.h" />
+    <ClInclude Include="util\cams\FlyCamera.h" />
     <ClInclude Include="models\base_models\Cube.h" />
     <ClInclude Include="models\base_models\BaseShape.h" />
     <ClInclude Include="models\base_models\Sphere.h" />

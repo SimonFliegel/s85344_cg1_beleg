@@ -19,7 +19,8 @@
 #include "models/SolarSystem.h";
 #include "models/RoomWithLamp.h";
 
-#include "util/FlyCamera.h";
+#include "util/cams/FlyCamera.h";
+#include "util/cams/FixedCamera.h";
 #include "util/Shader.h";
 
 
@@ -29,7 +30,7 @@ const GLuint FPS = 60; // only in idle
 double lastTime = 0;
 unsigned int frameCounter = 0;
 
-GLint windowWidth = 800;
+GLint windowWidth = 1000;
 GLint windowHeight = 600;
 
 // shaders
@@ -42,10 +43,12 @@ std::unique_ptr<Shader> roomWithLampShader;
 std::unique_ptr<Shader> solarSystemShader;
 Cylinder cylinder;
 
-
 // camera
 FlyCamera flyCamera;
+FixedCamera fixedCamera;
+
 //bool mouseMovedByUser = true;
+
 float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
@@ -54,11 +57,12 @@ std::unique_ptr<SolarSystem> solarSystem;
 std::unique_ptr<RoomWithLamp> roomWithLamp;
 
 // function declarations
-void drawScene(float deltaTime, glm::mat4 model, glm::mat4 view, glm::mat4 projection, glm::vec3 camPos);
+void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height);
+void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::vec3& camPos);
 
 
 // updateInterval in seconds
-void displayFps(unsigned int updateInterval)
+static void displayFps(unsigned int updateInterval)
 {
 	double delta = (glutGet(GLUT_ELAPSED_TIME) - lastTime) / 1000;
 	if (delta > updateInterval)
@@ -82,7 +86,10 @@ void init(void)
 	roomWithLampShader = std::make_unique<Shader>(ROOM_WITH_LAMP_VS, ROOM_WITH_LAMP_FS); // needs to be here, because of glewInit
 	solarSystemShader = std::make_unique<Shader>(SOLARSYSTEM_VS, SOLARSYSTEM_FS);
 
-	flyCamera = FlyCamera();
+	// camera setup
+	fixedCamera.setPositon(glm::vec3(0.0f, 0.8f, 0.3f));
+	fixedCamera.setFront(glm::vec3(0.0f, -1.0f, 0.0f));
+	fixedCamera.setFov(60.0f);
 
 	std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
 	std::cout << "OpenGL Version:  " << glGetString(GL_VERSION) << std::endl;
@@ -96,25 +103,36 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glViewport(0, 0, windowWidth, windowHeight);
-
 	deltaTime = (glutGet(GLUT_ELAPSED_TIME) - lastFrame) / 1000; // in seconds, in theory 1/FPS in idle
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);
 
+	int widthMainWindow = 3 * (windowWidth / 5);
+	int widthSecondaryWindow = 2 * (windowWidth / 5);
+
+	drawViewPort(flyCamera, 0, 0, widthMainWindow, windowHeight);
+	drawViewPort(fixedCamera, widthMainWindow, 0, widthSecondaryWindow, windowHeight);
+
 	displayFps(1.0f);
-	
-	// cam setup
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	//glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 view = flyCamera.getViewMatrix();
-	glm::mat4 projection = glm::perspective(glm::radians(flyCamera.getZoom()), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
-	
-	drawScene(deltaTime, model, view, projection, flyCamera.getPosition());
 
 	glFlush();
 }
 
-void drawScene(float deltaTime, glm::mat4 model, glm::mat4 view, glm::mat4 projection, glm::vec3 camPos) {
+void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height)
+{
+	glViewport(x, y, width, height);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = cam.getViewMatrix();
+	glm::mat4 projection = cam.getProjectionMatrix(width, height);
+	glm::vec3 pos = cam.getPosition();
+
+	/*std::cout << "pos: " << pos.x << " " << pos.y << " " << pos.z << std::endl;
+	std::cout << "view: " << view[0][0] << " " << view[0][1] << " " << view[0][2] << " " << view[0][3] << std::endl;*/
+
+	drawScene(deltaTime, model, view, projection, pos);
+}
+
+void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::vec3& pos) {
 
 	// ####################### draw solar system #######################
 	solarSystemShader->use();
@@ -140,7 +158,7 @@ void drawScene(float deltaTime, glm::mat4 model, glm::mat4 view, glm::mat4 proje
 	roomWithLamp->draw(modelRoom);
 	// update light position
 	roomWithLampShader->setVec3("lightPos", roomWithLamp->getLightPosition());
-	roomWithLampShader->setVec3("viewPos", camPos);
+	roomWithLampShader->setVec3("viewPos", pos);
 }
 
 

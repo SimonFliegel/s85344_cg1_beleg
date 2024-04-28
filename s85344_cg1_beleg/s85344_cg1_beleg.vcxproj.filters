@@ -30,7 +30,7 @@
     <ClCompile Include="models\base_models\Plain.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="util\FlyCamera.cpp">
+    <ClCompile Include="util\cams\FlyCamera.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="models\SolarSystem.cpp">
@@ -54,6 +54,9 @@
     <ClCompile Include="models\Room.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="util\cams\FixedCamera.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\roomWithLamp.fs" />
@@ -74,7 +77,7 @@
     <ClInclude Include="models\base_models\Plain.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="util\FlyCamera.h">
+    <ClInclude Include="util\cams\FlyCamera.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="models\SolarSystem.h">
@@ -102,6 +105,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="models\Room.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="util\cams\FixedCamera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="util\cams\AbstractCamera.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

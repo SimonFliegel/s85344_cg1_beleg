@@ -79,6 +79,11 @@ glm::mat4 FlyCamera::getViewMatrix() const
 	return glm::lookAt(position, position + front, up);
 }
 
+glm::mat4 FlyCamera::getProjectionMatrix(int windowWidth, int windowHeight) const
+{
+	return glm::perspective(glm::radians(zoom), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
+}
+
 glm::vec3 FlyCamera::getPosition() const
 {
 	return position;
