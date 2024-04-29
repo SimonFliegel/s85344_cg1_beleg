@@ -9,7 +9,7 @@ RoomWithLamp::RoomWithLamp(const Shader& shader)
 	shader.use();
 }
 
-void RoomWithLamp::draw(glm::mat4 model)
+void RoomWithLamp::draw(const glm::mat4& model)
 {
 	shader.use();
 	

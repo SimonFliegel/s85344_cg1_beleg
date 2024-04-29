@@ -6,12 +6,13 @@ class FixedCamera : public AbstractCamera
 {
 public:
 	FixedCamera() = default;
-	void setPositon(glm::vec3 pos);
-	void setFront(glm::vec3 target);
 	void setFov(float fov);
 	glm::mat4 getViewMatrix() const override;
 	glm::mat4 getProjectionMatrix(int windowWidth, int windowHeight) const override;
+	void setPosition(const glm::vec3& pos) override;
 	glm::vec3 getPosition() const override;
+	void setFront(const glm::vec3& front) override;
+	glm::vec3 getFront() const override;
 
 private:
 	float fov = 45.0f;

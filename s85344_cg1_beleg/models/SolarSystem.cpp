@@ -21,7 +21,7 @@ SolarSystem::SolarSystem(const Shader& shader) : shader(shader)
 	drawSolarSystem(glm::mat4(1.0f), 0.0f, true); // initial draw to bind textures
 }
 
-void SolarSystem::draw(glm::mat4 model, float deltaTime)
+void SolarSystem::draw(const glm::mat4& model, float deltaTime)
 {
 	drawSolarSystem(model, deltaTime, false);
 	sunPosition = glm::vec3(model * glm::vec4(sun.position, 1.0f));

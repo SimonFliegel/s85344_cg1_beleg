@@ -32,8 +32,8 @@ public:
 	virtual ~BaseShape() = default;
 	
 	void bind();
-	void draw(glm::mat4 model = glm::mat4(1.0f)) override; // inherited from AbstractShape
-	void drawPolygonMode(glm::mat4 model = glm::mat4(1.0f)); // draw in wireframe mode (only for base shapes available)
+	void draw(const glm::mat4& model = glm::mat4(1.0f)) override; // inherited from AbstractShape
+	void drawPolygonMode(const glm::mat4& model = glm::mat4(1.0f)); // draw in wireframe mode (only for base shapes available)
 
 	/*************************** debug ******************************/
 	void printVerticesInIndexedOrder() const;

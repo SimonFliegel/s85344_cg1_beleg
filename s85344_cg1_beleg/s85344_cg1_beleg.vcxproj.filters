@@ -154,5 +154,8 @@
     <Image Include="textures\wall.jpg">
       <Filter>Ressourcendateien</Filter>
     </Image>
+    <Image Include="textures\saturn_ring.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -29,13 +29,13 @@ void BaseShape::bind() {
 }
 
 
-void BaseShape::draw(glm::mat4 model) {
+void BaseShape::draw(const glm::mat4& model) {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
-void BaseShape::drawPolygonMode(glm::mat4 model) {
+void BaseShape::drawPolygonMode(const glm::mat4& model) {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBindVertexArray(VAO);

@@ -28,27 +28,29 @@ public:
 	void processScrollInput(int dir);
 	glm::mat4 getViewMatrix() const override;
 	glm::mat4 getProjectionMatrix(int windowWidth, int windowHeight) const override;
+	void setPosition(const glm::vec3& position) override;
 	glm::vec3 getPosition() const override;	
+	void setFront(const glm::vec3& front) override;
+	glm::vec3 getFront() const override;
 	float getZoom() const;
 
 private:
 	float zoom;
 	float movementSpeed;
 	float mouseSensitivity;
-
-	glm::vec3 position;
-	glm::vec3 front;
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 worldUp;
-
 	// euler angles
 	float yaw;
 	float pitch;
 
-	bool firstMouse;
-	int lastX;
-	int lastY;
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 right = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 worldUp = up;
+
+	bool firstMouse = true;
+	int lastX = 0;
+	int lastY = 0;
 
 	void updateCameraVectors();
 };

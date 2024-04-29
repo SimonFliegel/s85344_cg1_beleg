@@ -12,7 +12,7 @@ Room::Room(const Shader& shader, const char* const objectIdLoc)
 	shader.setInt(floorTextureLoc, floorTexture.getTextureUnit());
 }
 
-void Room::draw(glm::mat4 model)
+void Room::draw(const glm::mat4& model)
 {
 	shader.use();
 

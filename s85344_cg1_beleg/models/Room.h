@@ -15,7 +15,7 @@ class Room : AbstractShape
 {
 public:
 	explicit Room(const Shader&, const char* const objectIdLoc);
-	void draw(glm::mat4 model);
+	void draw(const glm::mat4& model) override;
 private:
 	const Shader& shader;
 	const char* const objectIdLoc;

@@ -11,7 +11,7 @@ Lamp::Lamp(const Shader& shader, const char* const objectIdLoc)
 	setLight(true);
 }
 
-void Lamp::draw(glm::mat4 model) {
+void Lamp::draw(const glm::mat4& model) {
 	shader.use();
 
 	shader.setInt(objectIdLoc, STAND_AND_ARM_ID);

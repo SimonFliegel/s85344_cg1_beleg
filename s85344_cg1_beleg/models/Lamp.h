@@ -14,7 +14,7 @@ class Lamp : AbstractShape
 {
 public:
 	explicit Lamp(const Shader&, const char* const objectIdLoc);
-	void draw(glm::mat4 model);
+	void draw(const glm::mat4& model) override;
 	void setLight(bool state);
 	glm::vec3 getLightPosition() const;
 private:

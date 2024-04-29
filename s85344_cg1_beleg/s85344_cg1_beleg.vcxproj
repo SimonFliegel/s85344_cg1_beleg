@@ -191,6 +191,7 @@
     <Image Include="textures\metal.jpg" />
     <Image Include="textures\neptune.jpg" />
     <Image Include="textures\saturn.jpg" />
+    <Image Include="textures\saturn_ring.png" />
     <Image Include="textures\sun.jpg" />
     <Image Include="textures\uranus.jpg" />
     <Image Include="textures\venus.jpg" />

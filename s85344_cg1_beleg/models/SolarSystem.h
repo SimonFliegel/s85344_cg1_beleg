@@ -33,7 +33,7 @@ class SolarSystem : private AnimatedAbstractShape
 {
 public:
 	explicit SolarSystem(const Shader& shader);
-	void draw(glm::mat4 model, float deltaTime) override;
+	void draw(const glm::mat4& model, float deltaTime) override;
 	glm::vec3 getLightPosition() const;
 
 private:

@@ -3,21 +3,7 @@
 #include <gtx/transform.hpp>
 
 FlyCamera::FlyCamera(float yaw, float pitch, float zoom, float speed, float sensitvity)
-{
-	this->zoom = zoom;
-	this->yaw = yaw;
-	this->pitch = pitch;
-	this->movementSpeed = speed;
-	this->mouseSensitivity = sensitvity;
-
-	firstMouse = true;
-
-	// @TODO: make these configurable?
-	position = glm::vec3(0.0f, 0.0f, 1.0f);
-	front = glm::vec3(0.0f, 0.0f, -1.0f);
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-	worldUp = up;
-}
+	: yaw(yaw), pitch(pitch), zoom(zoom), movementSpeed(speed), mouseSensitivity(sensitvity) {}
 
 void FlyCamera::processKeyboardInput(ECameraMovementDirection direction, float deltaTime)
 {
@@ -84,9 +70,24 @@ glm::mat4 FlyCamera::getProjectionMatrix(int windowWidth, int windowHeight) cons
 	return glm::perspective(glm::radians(zoom), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 }
 
+void FlyCamera::setPosition(const glm::vec3& position)
+{
+	this->position = position;
+}
+
 glm::vec3 FlyCamera::getPosition() const
 {
 	return position;
+}
+
+void FlyCamera::setFront(const glm::vec3& front)
+{
+	this->front = front;
+}
+
+glm::vec3 FlyCamera::getFront() const
+{
+	return front;
 }
 
 float FlyCamera::getZoom() const

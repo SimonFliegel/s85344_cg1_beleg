@@ -87,7 +87,9 @@ void init(void)
 	solarSystemShader = std::make_unique<Shader>(SOLARSYSTEM_VS, SOLARSYSTEM_FS);
 
 	// camera setup
-	fixedCamera.setPositon(glm::vec3(0.0f, 0.8f, 0.3f));
+	flyCamera.setPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+
+	fixedCamera.setPosition(glm::vec3(0.0f, 0.8f, 0.3f));
 	fixedCamera.setFront(glm::vec3(0.0f, -1.0f, 0.0f));
 	fixedCamera.setFov(60.0f);
 
@@ -125,9 +127,6 @@ void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height)
 	glm::mat4 view = cam.getViewMatrix();
 	glm::mat4 projection = cam.getProjectionMatrix(width, height);
 	glm::vec3 pos = cam.getPosition();
-
-	/*std::cout << "pos: " << pos.x << " " << pos.y << " " << pos.z << std::endl;
-	std::cout << "view: " << view[0][0] << " " << view[0][1] << " " << view[0][2] << " " << view[0][3] << std::endl;*/
 
 	drawScene(deltaTime, model, view, projection, pos);
 }
