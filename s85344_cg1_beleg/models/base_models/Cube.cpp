@@ -4,10 +4,12 @@
 
 
 
-void Cube::createShape() {
+void Cube::createShape()
+{
 	Vertex v;
 
-	const glm::vec3 positions[24] = {
+	const glm::vec3 positions[24] = 
+	{
 		// Front face
 		{-0.5f, -0.5f, 0.5f}, {0.5f, -0.5f, 0.5f}, {0.5f, 0.5f, 0.5f}, {-0.5f, 0.5f, 0.5f},
 		// Back face
@@ -22,7 +24,8 @@ void Cube::createShape() {
 		{-0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, -0.5f}, {-0.5f, 0.5f, -0.5f}
 	};
 
-	const glm::vec3 normals[24] = {
+	const glm::vec3 normals[24] =
+	{
 		// Front face
 	   {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f},
 	   // Back face
@@ -38,7 +41,8 @@ void Cube::createShape() {
 	};
 
 	const unsigned int repeat = 10;
-	const glm::vec2 texCoords[24] = {
+	const glm::vec2 texCoords[24] = 
+	{
 		{0.0f, 0.0f}, {repeat * 1.0f, 0.0f}, {repeat * 1.0f, repeat * 1.0f}, {0.0f, repeat * 1.0f},
 		{0.0f, 0.0f}, {repeat * 1.0f, 0.0f}, {repeat * 1.0f, repeat * 1.0f}, {0.0f, repeat * 1.0f},
 		{0.0f, 0.0f}, {repeat * 1.0f, 0.0f}, {repeat * 1.0f, repeat * 1.0f}, {0.0f, repeat * 1.0f},
@@ -56,7 +60,8 @@ void Cube::createShape() {
 		20, 21, 22, 20, 22, 23 // Top face
 	};
 
-	for (unsigned int i = 0; i < 24; i++) {
+	for (unsigned int i = 0; i < 24; i++)
+	{
 		v.position = positions[i];
 		v.normal = normals[i];
 		v.texCoord = texCoords[i];
@@ -66,6 +71,7 @@ void Cube::createShape() {
 
 }
 
-Cube::Cube() {
+Cube::Cube()
+{
 	createShape();
 }

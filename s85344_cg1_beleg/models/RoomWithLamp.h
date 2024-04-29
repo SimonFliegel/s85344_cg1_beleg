@@ -9,9 +9,24 @@ const char* const OBJECT_ID_LOC = "objectId";
 class RoomWithLamp : private AbstractShape
 {
 public:
+	/// <summary>
+	/// scene with a room and a lamp init using a given shader
+	/// </summary>
+	/// <param name="shader">shader for rendering</param>
 	explicit RoomWithLamp(const Shader& shader);
+
+	/// <summary>
+	/// draws the romm with the lamp
+	/// </summary>
+	/// <param name="model">for transformation of the scene</param>
 	void draw(const glm::mat4& model) override;
+
+	/// <summary>
+	/// toggles the light of the lamp
+	/// </summary>
 	void toggleLight();
+
+	/// <returns>light position</returns>
 	glm::vec3 getLightPosition() const;
 
 private:

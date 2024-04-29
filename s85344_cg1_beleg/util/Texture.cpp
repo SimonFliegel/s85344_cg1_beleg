@@ -4,12 +4,8 @@
 #include "Texture.h"
 
 Texture::Texture(const char* texturePath, GLuint textureUnit, GLenum wrappingMode, GLenum minificationFilter, GLenum magnificationFilter)
+	: texturePath(texturePath), textureUnit(textureUnit), wrappingMode(wrappingMode), minificationFilter(minificationFilter), magnificationFilter(magnificationFilter)
 {
-	this->texturePath = texturePath;
-	this->textureUnit = textureUnit;
-	this->wrappingMode = wrappingMode;
-	this->minificationFilter = minificationFilter;
-	this->magnificationFilter = magnificationFilter;
 	loadTexture();
 }
 
@@ -17,13 +13,16 @@ void Texture::loadTexture()
 {
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(texturePath, 0);
 
-	if (format == -1) {
+	if (format == -1) 
+	{
 		std::cout << "Could not find image: " << texturePath << std::endl;
 	}
-	else if (format == FIF_UNKNOWN) {
+	else if (format == FIF_UNKNOWN)
+	{
 		std::cout << "Couldn't determine file format - attempting to get from file extension..." << std::endl;
 		format = FreeImage_GetFIFFromFilename(texturePath);
-		if (!FreeImage_FIFSupportsReading(format)) {
+		if (!FreeImage_FIFSupportsReading(format)) 
+		{
 			std::cout << "Detected image format cannot be read!" << std::endl;
 		}
 	}

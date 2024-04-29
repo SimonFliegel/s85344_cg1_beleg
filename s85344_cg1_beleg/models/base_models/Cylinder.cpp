@@ -4,7 +4,8 @@
 
 // @see: http://www.songho.ca/opengl/gl_cylinder.html
 
-std::vector<glm::vec3> Cylinder::getUnitCircleVertices() {
+std::vector<glm::vec3> Cylinder::getUnitCircleVertices() 
+{
     float sectorStep = 2 * PI / RESOLUTION;
     float sectorAngle;
 
@@ -22,7 +23,8 @@ std::vector<glm::vec3> Cylinder::getUnitCircleVertices() {
     return unitCircleVertices;
 }
 
-void Cylinder::createVertices() {
+void Cylinder::createVertices()
+{
     // clear memory of prev arrays
     std::vector<Vertex>().swap(vertices);
 
@@ -106,7 +108,8 @@ void Cylinder::createVertices() {
     }
 }
 
-void Cylinder::createIndices(int topCenterIndex, int baseCenterIndex) {
+void Cylinder::createIndices(int topCenterIndex, int baseCenterIndex) 
+{
     // generate CCW index list of cylinder triangles
     int k1 = 0;                         // 1st vertex index at base
     int k2 = RESOLUTION + 1;           // 1st vertex index at top
@@ -163,11 +166,13 @@ void Cylinder::createIndices(int topCenterIndex, int baseCenterIndex) {
     }
 }
 
-void Cylinder::createShape() {
+void Cylinder::createShape() 
+{
     createVertices();
     createIndices(topCenterIndex, baseCenterIndex); // has to be called after createVertices()
 } 
 
-Cylinder::Cylinder() {
+Cylinder::Cylinder() 
+{
 	createShape();
 }

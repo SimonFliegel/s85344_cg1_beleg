@@ -61,7 +61,10 @@ void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height);
 void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::vec3& camPos);
 
 
-// updateInterval in seconds
+/// <summary>
+/// displays the fps in the window title
+/// </summary>
+/// <param name="updateInterval">interval in seconds to update the fps</param>
 static void displayFps(unsigned int updateInterval)
 {
 	double delta = (glutGet(GLUT_ELAPSED_TIME) - lastTime) / 1000;
@@ -79,6 +82,9 @@ static void displayFps(unsigned int updateInterval)
 	}
 }
 
+/// <summary>
+/// initializes glut
+/// </summary>
 void init(void)
 {
 	displayFps(0.0f); // initial call to update window title
@@ -101,6 +107,12 @@ void init(void)
 	roomWithLamp = std::make_unique<RoomWithLamp>(*roomWithLampShader);
 }
 
+/// <summary>
+/// glut callback for displaying the scene
+/// </summary>
+/// <param name="key"></param>
+/// <param name="x"></param>
+/// <param name="y"></param>
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -119,6 +131,9 @@ void display(void)
 	glFlush();
 }
 
+/// <summary>
+/// draws the view port with given camera and dimensions
+/// </summary>
 void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height)
 {
 	glViewport(x, y, width, height);
@@ -131,6 +146,14 @@ void drawViewPort(AbstractCamera& cam, int x, int y, int width, int height)
 	drawScene(deltaTime, model, view, projection, pos);
 }
 
+/// <summary>
+/// draws the entire scene with given model, view and projection matrix and camera position
+/// </summary>
+/// <param name="deltaTime">for constant animantion speed independent of fps</param>
+/// <param name="model">for transformation of the scene</param>
+/// <param name="view">camera view matrix</param>
+/// <param name="projection">camera projection matrix</param>
+/// <param name="pos">camera position</param>
 void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::vec3& pos) {
 
 	// ####################### draw solar system #######################
@@ -160,14 +183,18 @@ void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& pr
 	roomWithLampShader->setVec3("viewPos", pos);
 }
 
-
+/// <summary>
+/// glut callback when window is resized
+/// </summary>
 void reshape(int w, int h) 
 {
 	windowWidth = w;
 	windowHeight = h;
 }
 
-
+/// <summary>
+/// glut callback when key is pressed
+/// </summary>
 void keyboard(unsigned char key, int x, int y)
 {
 	if (key == 'w')
@@ -186,6 +213,9 @@ void keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+/// <summary>
+/// glut callback when mouse is moved
+/// </summary>
 void mouseMovement(int x, int y)
 {
 	flyCamera.processMouseInput(x, y);
@@ -193,16 +223,20 @@ void mouseMovement(int x, int y)
 	glutPostRedisplay();
 }
 
+/// <summary>
+/// glut callback when mouse wheel is scrolled
+/// </summary>
 void scroll(int, int dir, int, int)
 {
 	flyCamera.processScrollInput(dir);
 	glutPostRedisplay();
 }
 
+/// <summary>
+/// glut callback for updating the display
+/// </summary>
 void updateDisplay(int)
 {
-	// animation code
-	
 	glutPostRedisplay();
 	glutTimerFunc(1000 / FPS, updateDisplay, 0);
 }
@@ -216,17 +250,19 @@ int main(int argc, char** argv)
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	//GLUT_COMPATIBILITY_PROFILE
 	glutCreateWindow(argv[0]);
-	if (glewInit()) printf("Error");
+	
+	if (glewInit())
+	{
+		printf("Error");
+	}
+	
 	init();
 
 	// settings
-	//glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	//glEnable(GL_STENCIL_TEST);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	// callbacks
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
@@ -236,7 +272,6 @@ int main(int argc, char** argv)
 	glutTimerFunc(1000 / FPS, updateDisplay, 0);
 
 	glutMainLoop();
-
 }
 
 

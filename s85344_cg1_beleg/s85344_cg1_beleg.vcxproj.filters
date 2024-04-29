@@ -63,6 +63,7 @@
     <None Include="shaders\roomWithLamp.vs" />
     <None Include="shaders\solarSystem.vs" />
     <None Include="shaders\solarSystem.fs" />
+    <None Include="docs\docs.tex" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="models\base_models\Cube.h">

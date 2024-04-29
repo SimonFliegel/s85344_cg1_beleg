@@ -13,10 +13,28 @@ const char* const LIGHT_TEXTURE_LOC = "texLight";
 class Lamp : AbstractShape
 {
 public:
-	explicit Lamp(const Shader&, const char* const objectIdLoc);
+	/// <summary>
+	/// Lamp containing stand and light bulb as light source with textures
+	/// </summary>
+	/// <param name="shader">for rendering</param>
+	/// <param name="objectIdLoc">for mapping the right texture to the objects</param>
+	explicit Lamp(const Shader& shader, const char* const objectIdLoc);
+
+	/// <summary>
+	/// draws the lamp
+	/// </summary>
+	/// <param name="model">for transformation of the scene</param>
 	void draw(const glm::mat4& model) override;
+
+	/// <summary>
+	/// sets the light on or off
+	/// </summary>
+	/// <param name="state"></param>
 	void setLight(bool state);
+
+	/// <returns>light position</returns>
 	glm::vec3 getLightPosition() const;
+
 private:
 	const Shader& shader;
 	const char* const objectIdLoc;

@@ -13,11 +13,12 @@ out vec3 fragPos;
 out vec3 normal;
 out vec2 texCoord;
 
-void main() { 
+void main() 
+{ 
 	gl_Position = projection * view * model * vec4(aPosition, 1.0f);
 	fragPos = vec3(model * vec4(aPosition, 1.0f));
 	
-	// normal matrix to transform normals for non-uniform scaling (not needed in this case)
+	// normal matrix to transform normals for non-uniform scaling
 	normal = mat3(transpose(inverse(model))) * aNormal; 
 	
 	texCoord = vec2(aTexCoord.x, aTexCoord.y);

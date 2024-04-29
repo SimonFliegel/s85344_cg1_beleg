@@ -1,7 +1,8 @@
 #include "Sphere.h"
 
 // @see: http://www.songho.ca/opengl/gl_sphere.html
-void Sphere::createShape() {
+void Sphere::createShape() 
+{
 	const float RADIUS = 0.5f;
 	const int RESOLUTION = 50;
 
@@ -14,12 +15,14 @@ void Sphere::createShape() {
 	float stackStep = PI / RESOLUTION;
 	float sectorAngle, stackAngle;
 
-	for (int i = 0; i <= RESOLUTION; ++i) { // iterate over longitude lines
+	for (int i = 0; i <= RESOLUTION; ++i) // iterate over longitude lines
+	{
 		stackAngle = PI / 2 - i * stackStep;
 		xy = RADIUS * cosf(stackAngle);
 		z = RADIUS * sinf(stackAngle);
 
-		for (int j = 0; j <= RESOLUTION; ++j) { // iterate over latitude lines
+		for (int j = 0; j <= RESOLUTION; ++j) // iterate over latitude lines
+		{ 
 			sectorAngle = j * sectorStep;
 
 			x = xy * cosf(sectorAngle);
@@ -41,18 +44,22 @@ void Sphere::createShape() {
 	}
 
 	int k1, k2;
-	for (int i = 0; i < RESOLUTION; ++i) {
+	for (int i = 0; i < RESOLUTION; ++i)
+	{
 		k1 = i * (RESOLUTION + 1);
 		k2 = k1 + RESOLUTION + 1;
 
-		for (int j = 0; j < RESOLUTION; ++j, ++k1, ++k2) {
-			if (i != 0) {
+		for (int j = 0; j < RESOLUTION; ++j, ++k1, ++k2) 
+		{
+			if (i != 0) 
+			{
 				indices.push_back(k1);
 				indices.push_back(k2);
 				indices.push_back(k1 + 1);
 			}
 
-			if (i != (RESOLUTION - 1)) {
+			if (i != (RESOLUTION - 1)) 
+			{
 				indices.push_back(k1 + 1);
 				indices.push_back(k2);
 				indices.push_back(k2 + 1);
@@ -61,6 +68,7 @@ void Sphere::createShape() {
 	}
 }
 
-Sphere::Sphere() {
+Sphere::Sphere() 
+{
 	createShape();
 }

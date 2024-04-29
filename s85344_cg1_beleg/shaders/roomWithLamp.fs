@@ -42,19 +42,29 @@ void main() {
     
     vec4 texColor;
 
-    if (objectId == 0) {
+    if (objectId == 0)
+    {
         texColor = texture(texWall, texCoord);
-    } else if (objectId == 1) {
+    }
+    else if (objectId == 1) 
+    {
         texColor = texture(texFloor, texCoord);
-    } else if (objectId == 2) {
+    }
+    else if (objectId == 2)
+    {
         texColor = texture(texMetal, texCoord);
-    } else if (objectId == 3) {
+    }
+    else if (objectId == 3) 
+    {
         texColor = texture(texLight, texCoord);
-    } else {
+    } 
+    else
+    {
         texColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); // red (debugging)
     }
     
-    if (objectId == 3) { // light source
+    if (objectId == 3) // light source
+    { 
         lightResult = lightColor;
     }
 

@@ -11,7 +11,8 @@ Lamp::Lamp(const Shader& shader, const char* const objectIdLoc)
 	setLight(true);
 }
 
-void Lamp::draw(const glm::mat4& model) {
+void Lamp::draw(const glm::mat4& model) 
+{
 	shader.use();
 
 	shader.setInt(objectIdLoc, STAND_AND_ARM_ID);
@@ -50,7 +51,8 @@ void Lamp::draw(const glm::mat4& model) {
 	lightTexture.unbind();
 }
 
-void Lamp::setLight(bool state) {
+void Lamp::setLight(bool state)
+{
 	const std::string LIGHT_COLOR_LOC = "lightColor";
 	const glm::vec3 LIGHT_COLOR_OFF = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -61,6 +63,7 @@ void Lamp::setLight(bool state) {
 	}
 }
 
-glm::vec3 Lamp::getLightPosition() const {
+glm::vec3 Lamp::getLightPosition() const 
+{
 	return lightPos;
 }

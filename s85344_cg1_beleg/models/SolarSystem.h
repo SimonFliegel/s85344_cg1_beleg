@@ -32,8 +32,18 @@ struct Planet {
 class SolarSystem : private AnimatedAbstractShape
 {
 public:
+	/// <summary>
+	/// animated scene of the solar system
+	/// </summary>
+	/// <param name="shader">for rendering</param>
 	explicit SolarSystem(const Shader& shader);
+
+	/// <summary>
+	/// draws the solar system
+	/// </summary>
 	void draw(const glm::mat4& model, float deltaTime) override;
+
+	/// <returns>center of the sun as light source</returns>
 	glm::vec3 getLightPosition() const;
 
 private:

@@ -159,6 +159,7 @@
     <ClCompile Include="models\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="docs\docs.tex" />
     <None Include="shaders\roomWithLamp.fs" />
     <None Include="shaders\solarSystem.fs" />
     <None Include="shaders\solarSystem.vs" />

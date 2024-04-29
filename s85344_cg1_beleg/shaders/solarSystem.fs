@@ -37,27 +37,49 @@ void main() {
 
     vec4 texColor;
 
-    if (sphereId == 0) {
+    if (sphereId == 0)
+    {
         texColor = texture(texSun, texCoord);
-    } else if (sphereId == 1) {
+    } 
+    else if (sphereId == 1) 
+    {
         texColor = texture(texMercury, texCoord);
-    } else if (sphereId == 2) {
+    } 
+    else if (sphereId == 2) 
+    {
         texColor = texture(texVenus, texCoord);
-    } else if (sphereId == 3) {
+    }
+    else if (sphereId == 3)
+    {
         texColor = texture(texEarth, texCoord);
-    } else if (sphereId == 4) {
+    } 
+    else if (sphereId == 4)
+    {
         texColor = texture(texMars, texCoord);
-    } else if (sphereId == 5) {
+    } 
+    else if (sphereId == 5) 
+    {
         texColor = texture(texJupiter, texCoord);
-    } else if (sphereId == 6) {
+    } 
+    else if (sphereId == 6)
+    {
         texColor = texture(texSaturn, texCoord);
-    } else if (sphereId == 7) {
+    }
+    else if (sphereId == 7)
+    {
         texColor = texture(texUranus, texCoord);
-    } else if (sphereId == 8) {
+    }
+    else if (sphereId == 8)
+    {
         texColor = texture(texNeptune, texCoord);
     }
+    else 
+    {
+        texColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); // red (debugging)
+    }
     
-    if (sphereId == 0) { // light source
+    if (sphereId == 0) // light source
+    { 
         lightResult = lightColor; // not affected by lighting conditions
     }
 

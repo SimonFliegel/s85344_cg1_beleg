@@ -14,7 +14,17 @@ const char* const floorTextureLoc = "texFloor";
 class Room : AbstractShape
 {
 public:
-	explicit Room(const Shader&, const char* const objectIdLoc);
+	/// <summary>
+	/// Room conataining walls and floor with textures
+	/// </summary>
+	/// <param name="shader">for rendering</param>
+	/// <param name="objectIdLoc">for mappign the right texture to the objects</param>
+	explicit Room(const Shader& shader, const char* const objectIdLoc);
+
+	/// <summary>
+	/// draws the room
+	/// </summary>
+	/// <param name="model">for transformation of the scene</param>
 	void draw(const glm::mat4& model) override;
 private:
 	const Shader& shader;
@@ -23,8 +33,6 @@ private:
 	const int FLOOR_ID = 1;
 	const Texture wallTexture = Texture(WALL_TEXTURE, 10);
 	const Texture floorTexture = Texture(FLOOR_TEXTURE, 11);
-	const glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	Cube walls;
 	Plain floor;
-	glm::vec3 lightPos;
 };
