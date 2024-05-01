@@ -23,24 +23,21 @@ void RoomWithLamp::draw(const glm::mat4& model)
 	shader.setMat4("model", modelLamp);
 	lamp.draw(modelLamp);
 
-	lightPosition = modelLamp * glm::vec4(lamp.getLightPosition(), 1.0f);
+	lightPosition = glm::vec4(lamp.getLightPosition(), 1.0f) * modelLamp;
 }
 
 void RoomWithLamp::toggleLight()
 {
-	if (lightOn)
-	{
-		lamp.setLight(false);
-		lightOn = false;
-	}
-	else
-	{
-		lamp.setLight(true);
-		lightOn = true;
-	}
+	lamp.setLightState(!lamp.getLightState());
 }
 
 glm::vec3 RoomWithLamp::getLightPosition() const
 {
 	return lightPosition;
+}
+
+void RoomWithLamp::setExternalLightSource(const glm::vec3& lightPos, const glm::vec3& lightColor)
+{
+	shader.setVec3(EXTERNAL_LIGHT_POS_LOC, lightPos);
+	shader.setVec3(EXTERNAL_LIGHT_COLOR_LOC, lightColor);
 }

@@ -8,7 +8,7 @@ Lamp::Lamp(const Shader& shader, const char* const objectIdLoc)
 	shader.use();
 	shader.setInt(METAL_TEXTURE_LOC, standTexture.getTextureUnit());
 	shader.setInt(LIGHT_TEXTURE_LOC, lightTexture.getTextureUnit());
-	setLight(true);
+	setLightState(isOn);
 }
 
 void Lamp::draw(const glm::mat4& model) 
@@ -42,7 +42,7 @@ void Lamp::draw(const glm::mat4& model)
 
 	lightPos = glm::vec3(0.0f, 0.5f, 0.0f);
 	glm::mat4 modelLightBulb = glm::translate(model, lightPos);
-	modelLightBulb = glm::scale(modelLightBulb, glm::vec3(0.4f, 0.15f, 0.4f));
+	modelLightBulb = glm::scale(modelLightBulb, glm::vec3(0.4f, 0.1f, 0.4f));
 	shader.setMat4("model", modelLightBulb);
 
 	lightPos = glm::vec3(modelLightBulb * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -51,16 +51,21 @@ void Lamp::draw(const glm::mat4& model)
 	lightTexture.unbind();
 }
 
-void Lamp::setLight(bool state)
+void Lamp::setLightState(bool isOn)
 {
-	const std::string LIGHT_COLOR_LOC = "lightColor";
+	this->isOn = isOn;
 	const glm::vec3 LIGHT_COLOR_OFF = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	if (state) {
+	if (isOn) {
 		shader.setVec3(LIGHT_COLOR_LOC, lightColor);
 	} else {
 		shader.setVec3(LIGHT_COLOR_LOC, LIGHT_COLOR_OFF);
 	}
+}
+
+bool Lamp::getLightState() const
+{
+	return isOn;
 }
 
 glm::vec3 Lamp::getLightPosition() const 

@@ -10,6 +10,10 @@ const char* const LIGHT_TEXTURE = "textures/light.jpg";
 const char* const METAL_TEXTURE_LOC = "texMetal";
 const char* const LIGHT_TEXTURE_LOC = "texLight";
 
+const char* const VIEW_POS_LOC = "viewPos";
+const char* const LIGHT_POSITION_LOC = "primaryLightPos";
+const char* const LIGHT_COLOR_LOC = "primaryLightColor";
+
 class Lamp : AbstractShape
 {
 public:
@@ -29,8 +33,12 @@ public:
 	/// <summary>
 	/// sets the light on or off
 	/// </summary>
-	/// <param name="state"></param>
-	void setLight(bool state);
+	/// <param name="isOn"></param>
+	void setLightState(bool isOn);
+
+
+	/// <returns>the light state of the lamp (true: on, false: off)</returns>
+	bool getLightState() const;
 
 	/// <returns>light position</returns>
 	glm::vec3 getLightPosition() const;
@@ -42,7 +50,8 @@ private:
 	const int LIGHT_BULB_ID = 3;
 	const Texture standTexture = Texture(METAL_TEXTURE, 20);
 	const Texture lightTexture = Texture(LIGHT_TEXTURE, 21);
-	const glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	const glm::vec3 lightColor = glm::vec3(1.0f, 0.9f, 0.8f);
+	bool isOn = false;
 	Cylinder cylinder;
 	Sphere lightBulb;
 	glm::vec3 lightPos;

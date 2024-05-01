@@ -90,10 +90,15 @@ void SolarSystem::drawSaturn(float deltaTime, bool firstDraw)
 
 void SolarSystem::applyLighting()
 {
-	shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); // white light
+	shader.setVec3("lightColor", lightColor);
 }
 
 glm::vec3 SolarSystem::getLightPosition() const
 {
 	return sunPosition;
+}
+
+glm::vec3 SolarSystem::getExternalLightColorOfSun() const
+{
+	return externalLightColor;
 }

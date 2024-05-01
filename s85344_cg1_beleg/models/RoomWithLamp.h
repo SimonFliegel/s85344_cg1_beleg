@@ -6,6 +6,9 @@
 
 const char* const OBJECT_ID_LOC = "objectId";
 
+const char* const EXTERNAL_LIGHT_POS_LOC = "externalLightPos";
+const char* const EXTERNAL_LIGHT_COLOR_LOC = "externalLightColor";
+
 class RoomWithLamp : private AbstractShape
 {
 public:
@@ -29,11 +32,12 @@ public:
 	/// <returns>light position</returns>
 	glm::vec3 getLightPosition() const;
 
+	void setExternalLightSource(const glm::vec3& lightPos, const glm::vec3& lightColor);
+
 private:
 	const Shader& shader;
 	glm::vec3 lightPosition;
 	Lamp lamp = Lamp(shader, OBJECT_ID_LOC);
 	Room room = Room(shader, OBJECT_ID_LOC);
-	bool lightOn = true;
 };
 

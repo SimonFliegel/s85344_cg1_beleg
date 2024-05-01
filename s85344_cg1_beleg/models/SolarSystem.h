@@ -41,10 +41,16 @@ public:
 	/// <summary>
 	/// draws the solar system
 	/// </summary>
+	/// <param name="deltaTime">time since last frame for constant animation speed</param>
+	/// <param name="model">for transformation of the scene</param>
+	/// <param name="view">for specular lighting (not needed in this case)</param>
 	void draw(const glm::mat4& model, float deltaTime) override;
 
 	/// <returns>center of the sun as light source</returns>
 	glm::vec3 getLightPosition() const;
+
+	/// <returns>color of the sunlight</returns>
+	glm::vec3 getExternalLightColorOfSun() const;
 
 private:
 	Shader shader;
@@ -53,6 +59,8 @@ private:
 	const float SPEED = 1.0f; // used as a multiplier for the orbiting motion (dependent on FPS)
 	Sphere sphere = Sphere();
 	glm::vec3 sunPosition;
+	const glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f); // white light
+	const glm::vec3 externalLightColor = glm::vec3(1.0f, 0.7f, 0.3f); // orange light
 
 	Sun sun { 0.3f, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, Texture("textures/sun.jpg", 0), "texSun" };
 	

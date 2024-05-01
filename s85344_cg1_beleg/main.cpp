@@ -165,7 +165,6 @@ void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& pr
 	modelSolarSystem = glm::rotate(modelSolarSystem, glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.5f));
 	solarSystemShader->setMat4("model", modelSolarSystem);
 	solarSystem->draw(modelSolarSystem, deltaTime);
-
 	// update light position
 	solarSystemShader->setVec3("lightPos", solarSystem->getLightPosition());
 
@@ -177,9 +176,11 @@ void drawScene(float deltaTime, glm::mat4& model, glm::mat4& view, glm::mat4& pr
 
 	glm::mat4 modelRoom = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	roomWithLampShader->setMat4("model", modelRoom);
+	// add sun as external light source to room
+	roomWithLamp->setExternalLightSource(solarSystem->getLightPosition(), solarSystem->getExternalLightColorOfSun());
 	roomWithLamp->draw(modelRoom);
 	// update light position
-	roomWithLampShader->setVec3("lightPos", roomWithLamp->getLightPosition());
+	roomWithLampShader->setVec3("primaryLightPos", roomWithLamp->getLightPosition());
 	roomWithLampShader->setVec3("viewPos", pos);
 }
 

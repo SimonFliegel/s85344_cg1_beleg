@@ -44,7 +44,7 @@ public:
 	/// <summary>
 	/// draws the shape
 	/// </summary>
-	/// <param name="model"></param>
+	/// <param name="model">not needed for basic shapes</param>
 	void draw(const glm::mat4& model = glm::mat4(1.0f)) override; // inherited from AbstractShape
 
 	/// <summary>
