@@ -1,34 +1,291 @@
 \documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper, top=25mm, left=25mm, right=25mm, bottom=25mm]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{dirtree}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+\titlespacing*{\section}{0pt}{3\baselineskip}{2\baselineskip}
+\titlespacing*{\subsection}{0pt}{2\baselineskip}{1\baselineskip}
+
+\let\oldsection\section
+\renewcommand\section{\needspace{10\baselineskip}\oldsection}
+
+\let\oldsubsection\subsection
+\renewcommand\subsection{\needspace{5\baselineskip}\oldsubsection}
+
+
+\let\oldsubsubsection\subsubsection
+\renewcommand\subsubsection{\needspace{5\baselineskip}\oldsubsubsection}
+
 
 \begin{document}
 
 % Title and author information
-\title{My Document}
-\author{Your Name}
+\title{Computergrfik I - Beleg}
+\author{Simon Fliegel \\ M.-Nr.: 53043 \\ s-Nr.: s85344}
 \date{\today}
 
 \maketitle
 
-% Content goes here
+\tableofcontents
 
-\end{document}
-\section{Introduction}
-This is the introduction section of my document.
+\listoffigures
 
-\section{Methods}
-In this section, I will explain the methods used in my research.
+\clearpage
 
-\section{Results}
-Here, I will present the results obtained from my experiments.
+\section{Aufgabenstellung}
+Es ist eine animierte Szene in OpenGL mit C++ zu implementieren.
+Es sollen mehrere unterschiedliche Lichtquellen verschiedene 3D-Objekte beleuchten.
+Die Lichtquellen sollen dabei verschiedenartig sein (ambient, diffuse, specular).
+Die Szene soll gleichzeitigen in mehreren Ansichten und Projektionen Viewports dargestellt werden.
+Außerdem soll eine Nutzerinteraktion möglich sein.
 
-\section{Discussion}
-In the discussion section, I will analyze and interpret the results.
+\section{Implementierung}
+Bei der Implementierung habe ich mich stark an \cite{learnopengl} und den dazugehörigen Code-Beispielen \cite{repository} orientiert.
+Ich habe vorab die ersten Kapitel des Buches durchgearbeitet um einen Eindruck für den Umfang und die Struktur des Programms zu bekommen.
+Mein Anspruch war eine möglichst saubere und modulare Architektur, die problemlos eine Weiterentwicklung ermöglichen würde.
+Besonders bei OpenGL empfand ich es als sehr hilfreich, wenn Kernfunktionalitäten in eigene Klassen ausgelagert werden.
+Dadurch konnten diese leicht wiederverwendet werden und nach dem Testen als Fehlerquelle ausgeschlossen werden.
+Die Architektur hat den Großteil der Entwicklungszeit in Anspruch genommen aber ich hätte in Zukunft auch keine Angst davor, das Programm zu erweitern ohne das bestehende Funktionalität kaputt geht.
 
-\section{Conclusion}
-Finally, I will conclude my document with a summary of the findings.
+\subsection{Elementare Objecte} \label{sec:elementary-objects}
+Angefangen habe ich mit der Implementierung von elementaren geometrischen 3D-Objekten, wie \texttt{Cube}, \texttt{Sphere} \cite{sphere} und \texttt{Cylinder} \cite{cylinder}.
+Diese Herangehensweise war sinnvoll, da man hier noch nicht viel Setup benötigt um die Objekte zu rendern und deren Richtigkeit zu testen.
+Spätestens beim Anlegen mehrerer verschiedener Objekte bietet sich das Auslagern des \textit{Setups} in eine Basis-Klasse \texttt{BaseShape} an, da hier immer wieder die gleichen Schritte vorgenommen werden müssen.
+Das hat zur Folge, dass sich die konkreten Implementierungen der Objekte auf das algorithmische Erzeugen der Vertices und Indices beschränken und dass zentrale Einstellungen wie der Rendermodus global vorgenommen werden können.
+Das Ziel war es mehrere dieser Objekte zu verwenden um komplexere Objekte zu erzeugen (s. \ref{sec:complex-objects}).
+
+\subsection{Shader}
+Da die Shader für jeden Bearbeitungsschritt notwnendig sind, habe ich diese parallel immer weiter entwickelt. 
+Zunächst habe ich nur statisch eine Farbe vergeben um die korrekte Darstellung der Objekte zu prüfen.
+Später habe ich Texturen und Beleuchtung hinzugefügt.
+Außerdem habe ich mich irgendwann für eine eigene Shader-Klasse entschieden (analog zu \cite{shader-class}), die den Umgang mit mehreren Shader-Programmen und vielen Uniforms deutlich vereinfacht.
+Ich habe mich auch dafür entschieden für komplexe Objekte eigene Shader-Programme zu verwenden.
+Das erschien mir anfangs sinnvoll, nachdem ich allein für das Sonnensystem neun Texturen brauchte und das zunehmend unübersichtlich wurde. 
+Außerdem habe ich eine ObjektID zur Zuordnung von Objekten und Textur auf Shaderseite eingeführt und mir gefiel der Gedanke nicht, diese ID klassenübergreifend hochzuzählen.
+Allerdings hat das am Ende die Handhabung mehrerer Lichtquellen erschwert, weil ich sozusagen redundant die Informationen der Lichtquelle aus dem Sonnensystem-Shader (Sonne) an den Shader für die Raum-Szene übergeben musste, damit die Sonne die Beleuchtung des Raumes beeinflusst.
+Somit habe ich am Ende nicht die saubere Trennung der komplexen Objekte erhalten, wie ich es mir anfangs erhofft hatte.
+Im Nachhinein bin ich mir nicht mehr sicher, was die bessere Lösung gewesen wäre. 
+
+\subsection{Kamera}
+Die Kamera-Klasse \texttt{FlyCamera} habe ich weitestgehend aus \cite{flycam-class} übernommen und nur leicht angepasst.
+Die Callbacks für User-Inputs sind natürlich andere durch die Verwendung von \texttt{FreeGLUT} statt \texttt{GLFW} aber das ist keine große Hürde gewesen.
+Die Aufteilung in einzelne Kameraklassen kommt ebenfalls der Les- und Wartbarkeit sehr entgegen.
+Später habe ich dann noch eine zweite Kamera \texttt{FixedCamera} hinzugefügt, die statisch durch Position, Blickrichtung und FOV definiert ist.
+Da ich zur Darstellung der Szene in einem Viewport von der Kamera nur View- und Projection-Matrix sowie die Position benötige, habe ich ein Interface \texttt{AbstractCamera} eingeführt, das von beiden Klassen implementiert wird.
+Damit geschieht das Rendern eines Viewports nun sehr elegant und das Hinzufügen weiterer Viewports wäre problemlos in wenigen Zeilen möglich.
+
+\subsection{Textur}
+Nachdem ich schon erfolgreich Shader und Kamera in Klassen ausgelagert habe, war es mein Anspruch dasselbe auch mit Texturen zu probieren.
+Das hat es mir ermöglicht, problemlos viele Texturen zu verwenden und zwischen ihnen hin und her zu wechseln.
+Bei dem Entwurf der Klasse habe ich mich an \cite{texture} entlang gehangelt.
+Ein Fehler, der mich hier fast in den Wahnsinn getrieben hätte, war die korrekte Farbdarstellung der Texturen.
+Die Farben waren alle invertiert und ich musste statt \texttt{GL\_RGB} die Konstante \texttt{GL\_BGR\_EXT}, da \texttt{FreeImage} die Farben in BGR-Reihenfolge speichert.
+Eine weitere Frage war der Umgang mit mehreren bis vielen 2D-Texturen.
+Bei der Recherche sind mir mehrere Möglichkeiten begegnet, wie dem laden meherer 2D-Texturen durch eine 3D-Textur um die Begrenzung der Texture-Units zu umgehen.
+Als mir nach weiterer Recherche klar wurde, dass diese Begrenzung im Bereich von mehreren tausend Texturen liegt, habe ich mich für die herkömmlichen Weg entschieden, die Texturen getrennt als 2D-Texturen zu laden.
+Am Ende bin ich auch hier nicht ganz zufrieden mit der Umsetzung. Besonders auf Shaderseite hätte ich mir eine generischere Lösung gewünscht ohne für jede Textur eine neue Objekt-ID zu vergeben bzw. auszuwerten.
+Außerdem funktionert das Mapping der Texturen auf die Objekte über eine mitgelieferte ID, die über mehrere Klasssen hinweg konsistent sein muss.
+Eleganter wäre wahrscheinlich eine zentrale Vergabe bzw. Verwaltung von Texturen und IDs, die die programmweite Konsistenz sichert aber das würde den Rahmen dieses Belegs sprengen.
+
+\subsection{Komplexe Objekte/ Szenen} \label{sec:complex-objects}
+Nachdem alles oben genannte funktionierte, hat der Entwurf von zusammengesetzten komplexen Objekte den meisten Spaß gemacht.
+Da ich nun alles sauber getrennt hatte, konnten Fehler eigentlich nur in der Implementierung des komplexen Objekts liegen und ich musste nicht jedes mal dessen Bestandteile überprüfen.
+
+\subsubsection{Sonnensystem} \label{sec::solar-system}
+Angefangen habe ich mit der Klasse \texttt{SolarSystem}, da ich hier Animation, Texturen und Beleuchtung kombinieren konnte.
+Durch die Vereinbarung der Strukturen \texttt{Planet} und \texttt{Sonne} konnte ich angenehm über die Planeten iterieren und die nötigen Tansformations-Berechnungen durchführen.
+Anfangs dachte ich, ein Referenzwinkel für alle Planeten würde ausreichen wenn ich diesen abhängig von der Geschwindigkeit des Planeten um einen Faktor erhöhe.
+Da der Referenzwinkel aber im Wertebereich zwischen 0 und 2$\pi$ läuft, wurden alle Planeten nach einer gewissen Zeit wieder auf ihren Ursprungsort zurückgesetzt.
+Die Lösung war natürlich für jeden Planeten in der Struktur einen eigenen Winkel mitzuführen und diesen dann abhängig von der Geschwindigkeit zu erhöhen, sodass alle Planeten unabhängig voneinander rotieren können.
+Bei den Texturen für die Planeten habe ich mich von \textit{Solar System Scope} \cite{solar-textures} bedient.
+Bei der Beleuchtung habe ich mich nur für ambient und diffuse entschieden, da mir specular im Sonnensystem (für die Planeten) nicht sinnvoll erschien.
+Als sowohl Texturen als auch Beleuchtung korrekt funktionierten, war ich sehr zufrieden mit dem Ergebnis.
+
+\subsubsection{Raum mit Lampe}
+Nach der Entwicklung des Sonnensystems (s. \ref{sec::solar-system}) hab ich mir überlegt eine Raum-Szene \texttt{RoomWithLamp} mit einer weiteren Lichtquelle zu bauen, die dann durch das Sonnensystem ergänzt werden sollte.
+Anfangs wollte ich diese Szene genau wie das Sonnensystem in einer Klasse implementieren aber da die Objekte sauber trennbar waren, habe ich sie letztendlich doch in eigene Klassen \texttt{Room} und \texttt{Lamp} aufgeteilt.
+Dadurch musste ich zwar mehrere Tranformationsschritte durchführen und jeweils die Tansformationsmatrix durchreichen aber das Verschieben der Objekte im Raum ist so sehr elegant geworden, da ich z.B. die Lampe als ganzes über eine Matrix tranformieren kann.
+Bei dem Raum hatte ich anfangs nur einen Würfel mit Textur. Später habe ich mich dann doch noch dazu entschieden einen Boden einzufügen.
+Die Lampe war etwas schwieriger, da sie aus mehreren elementaren Objekten (s. \ref{sec:elementary-objects}) besteht und ich den Ort der Lichtquelle mit beachten musste.
+Bei Lampe hat sich die Verwendung von des gesamten Phong-Beleuchtungsmodells angeboten, da die Lampe durch die Reflexionen im Raum sehr realistisch wirkt.
+Zuletzt habe ich hier den Shader so angepasst, dass die Sonne als externe Lichtquelle im Shader hinzugefügt werden kann, aber nicht muss.
+Dadurch beleuchtet die Sonne den Raum auch bei ausgeschalteter Lampe und die Lampe wird als passives Objekt im Raum angestrahlt.
+Der Fokus bei der Erstellung dieser Szene lag auf der korrekten Anwendung mehrerer Transformationsstufen um die Objekte korrekt im Raum anzuordnen und der korrekten Beleuchtung mit zwei (unterschiedlichen) Lichtquellen.
+
+\subsection{Hauptprogramm}
+Das Hauptprogramm ist aufgrund der sauberen Trennung der Klassen sehr übersichtlich geblieben und besteht im Wesentlichen aus der Initialisierung, dem Rendern der Szenen in den Viewports, den Callbacks, einer FPS-Anzeige und der \texttt{main}-Funktion.
+Bei der Begrenzung der FPS bin in eine nette Falle getappt.
+Anfangs hatte ich das Problem, dass meine Grafikkarte bei Ausführung des Programms dauerhaft auf fast 100\% Auslastung lief.
+Grund dafür war, dass die \texttt{display}-Funktion durch \texttt{glutMainLoop} so oft, wie möglich aufgerufen wurde.
+Gelöst habe ich das Problem durch eine FPS-Begrenzung über den Callback \texttt{glutTimerFunc}, der die \texttt{display}-Funktion nur so oft aufruft, dass ca. 60 FPS erreicht werden.
+Das hat zwar den gewünschten Effekt auf die Performanze erzielt (unter 10\% Auslastung) aber alle Animationen sind \textit{stehen geblieben}.
+Zu dem Zeitpunkt, als ich diese Änderung gemacht habe, hatte ich die Animationen noch nicht in Abhängigkeit der \texttt{deltaTime} (Zeit zwischen zwei Bildern) implementiert sondern so, dass es im aktuellen Zustand gut aussah.
+Da jetzt die Anzahl der Bilder um ca. Faktor 100 reduziert wurde, nahm auch die Animationsgeschwindigkeit um diesen Faktor ab und es stand alles still.
+Leider habe ich eine Weile gebraucht, bis ich auf die Ursache gestoßen bin.
+Anschließend habe ich die Klasse \texttt{AnimatedAbstractShape} eingeführt, welche dafür sorgt, dass immer eine \texttt{deltaTime} übergeben werden muss.
+Hätte ich das Programm auf einem anderen Rechner ausgeführt, hätte ich wahrscheinlich einen ähnlichen Effekt gemerkt, da die Animationsgeschwindigkeit abhängig von der Bildwiederholrate und damit der Leistung des Systems war.
+Die FPS-Anzeige habe ich dann im gleichen Zug noch mit eingefügt um die Performanz in Zukunft besser im Blick zu haben.
+Dabei ist mir ein Problem aufgefallen, dass ich bisher nicht gelöst habe. Die User-Interaktionen umgehen momentan die FPS-Begrenzung und führen zu einer deutlich höheren Auslastung der Grafikkarte.
+In \ref{sec:improvements} ist dieser Punkt mit aufgeführt.
+
+\clearpage
+
+\section{Ideen zur Verbesserung} \label{sec:improvements}
+Es gibt noch einige Dinge die ich gerne umgesetzt oder verbessert hätte, aber aufgrund vieler anderer Belege und eines privaten Zwischenfalls wollte ich das Thema jetzt vom Tisch haben.
+Meine Ideen sind:
+
+\begin{itemize}
+    \item realistische Werte für das Sonnensystem (zumindest in Bezug auf die Größenverhältnisse und Geschwindigkeiten)
+    \item Hinzufügen des Saturn-Rings
+    \item FPS auch bei User-Interaktionen begrenzen
+    \item flackernde Texturen fixen
+    \item mehere Lichteinstellungsmöglichkeiten (dimmen, Farbe ändern)
+    \item bewegliche Kamera in der Raum-Szene halten
+    \item Mauszeiger immer zentrieren und ausblenden um eine gute Kamerasteuerung zu ermöglichen
+    \item FPS-Kamera
+\end{itemize}
+
+\clearpage
+
+\section{Fazit}
+Ich hatte großen Respekt vor der Bearbeitung dieses Belegs und habe auch über einen sehr langen Zeitraum daran gearbeitet.
+Allerdings habe ich dabei nicht nur die rudimentäre Anwendung von OpenGL sondern auch viele Dinge über C++ gelernt, sodass ich mich jetzt mit der Sprache deutlich wohler fühle als am Anfang.
+Teilweise ist mir die Umsetzung einer guten Architektur mit OpenGL nicht leicht gefallen, da OpenGL sehr Zustandsorientiert arbeitet und somit einige Operationen in manchem Kontexten nicht zulässig sind.
+Das hat die Trennung der Funktionalitäten in möglichst atomare Klassen erschwert und mich machmal zu Kompromissen gezwungen.
+Dennoch bin ich mit dem Ergebnis sehr zufrieden und kann mir vorstellen in Zukunft noch einige Dinge umzusetzen bzw. dieses Projekt als \textit{OpenGL-Blaupause} für mich zu verwenden.
+
+\clearpage
+
+\section{Quellen}
 
 % Bibliography
 \begin{thebibliography}{9}
-\bibitem{ref1} Author 1, \textit{Title of the first reference}, Journal Name, Year.
-\bibitem{ref2} Author 2, \textit{Title of the second reference}, Conference Name, Year.
+    \bibitem{learnopengl} Joey de Vries, \textit{Learn OpenGL - Graphics Programming}, Joey de Vrise, 2020.
+    \bibitem{repository} Joey de Vries, \textit{LearnOpenGL}, \the\year, \url{https://github.com/JoeyDeVries/LearnOpenGL}.
+    \bibitem{shader-class} Joey de Vries, \textit{LearnOpenGL}, \the\year, \url{https://github.com/JoeyDeVries/LearnOpenGL/blob/master/includes/learnopengl/shader.h}.
+    \bibitem{flycam-class} Joey de Vries, \textit{LearnOpenGL}, \the\year, \url{https://github.com/JoeyDeVries/LearnOpenGL/blob/master/includes/learnopengl/camera.h}.
+    \bibitem{camera} Song Ho Ahn, \textit{Camera}, \the\year, \url{https://www.songho.ca/opengl/gl_camera.html}.
+    \bibitem{sphere}  Song Ho Ahn, \textit{Sphere, Icosphere, Cubsphere}, \the\year, \url{https://www.songho.ca/opengl/gl_sphere.html}.
+    \bibitem{cylinder} Song Ho Ahn, \textit{Cylinder, Prism, Pipe}, \the\year, \url{https://www.songho.ca/opengl/gl_cylinder.html}.
+    \bibitem{texture} \textit{Tutorial 14 : Render To Texture}, \the\year, \\
+        \url{https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-texture/}
+    \bibitem{solar-textures} \textit{Solar System Scope}, \the\year, \url{https://www.solarsystemscope.com/textures/}.
 \end{thebibliography}
+
+\clearpage
+
+\appendix
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\section*{Anhang}
+
+\subsection{Installations- und Bedienungsanleitung}
+
+\subsubsection*{Installationsanleitung}
+
+Ich habe zwei Zip-Dateien bereitgestellt. 
+Eine enthält die ausführbare Datei mit den benötigten Texturen und Shadern.
+Da ich relative Pfade verwende, muss folgende Ordnerstruktur für die ausführbare Version eingehalten werden:
+
+\vspace{1em}
+
+\dirtree{%
+    .1 s85344-beleg-compiled.
+        .2 s85344-beleg.exe.
+        .2 textures.
+            .3 \textit{*.png/jpg}.
+        .2 shaders.
+            .3 roomWithLamp.vs.
+            .3 roomWithLamp.fs.
+            .3 solarSystem.vs.
+            .3 solarSystem.fs.
+}
+
+\vspace{1em}
+
+Die zweite Zip-Datei enthält das gesamte Projekt einschließlich Quellcode und müsste entsprechend gebaut werden.
+Ich habe zur Entwicklung \textit{Visual Studio 2022} verwendet aber bin bei den Bibliotheken aus dem Praktikum geblieben.
+Deshalb hoffe ich, dass es keine Probleme bei der Kompilierung gibt.\\
+Die Ordnerstruktur sollte wie folge aussehen:
+
+\vspace{1em}
+
+\dirtree{%
+    .1 s85344-beleg.
+        .2 s85344\_cg1\_beleg.sln.
+        .2 s85344\_cg1\_beleg.
+            .3 s85344\_cg1\_beleg.vcxproj.
+            .3 main.cpp.
+            .3 models.
+                .4 base\_models.
+                    .5 BaseShape.h.
+                    .5 BaseShape.cpp.
+                    .5 Cube.h.
+                    .5 Cube.cpp.
+                    .5 Sphere.h.
+                    .5 Sphere.cpp.
+                    .5 Cylinder.h.
+                    .5 Cylinder.cpp.
+                    .5 Plain.h.
+                    .5 Plain.cpp.
+                .4 AbstractShape.h.
+                .4 AnimatedAbstractShape.h.
+                .4 Lamp.h.
+                .4 Lamp.cpp.
+                .4 Room.h.
+                .4 Room.cpp.
+                .4 RoomWithLamp.h.
+                .4 RoomWithLamp.cpp.
+                .4 SolarSystem.h.
+                .4 SolarSystem.cpp.
+            .3 shaders.
+                .4 roomWithLamp.vs.
+                .4 roomWithLamp.fs.
+                .4 solarSystem.vs.
+                .4 solarSystem.fs.
+            .3 textures.
+                .4 \textit{*.png/jpg}.
+            .3 util.
+                .4 cams.
+                    .5 AbstractCamera.h.
+                    .5 FlyCamera.h.
+                    .5 FixedCamera.h.
+                .4 Shader.h.
+                .4 Shader.cpp
+                .4 Texture.h.
+                .4 Texture.cpp.
+}
+
+\vspace{1em}
+
+\subsubsection*{Bedienungsanleitung}
+In der Anwendung ist auf der linken Seite frei im Raum steuerbare Kamera.
+Die Kamera kann mit \texttt{W}, \texttt{A}, \texttt{S}, \texttt{D}, bewegt werden.
+Außerdem kann man sich mit der Maus umsehen und mit Mausrad zoomen.
+Auf der rechten Site ist eine statische Kaerma auf das Sonnensystem gerichtet ist.
+Die Lampe kann mit \texttt{Space} an- und ausgeschaltet werden.
+
+\clearpage
+
+\subsection{Screenshots}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/full-window-light-off.png}
+    \caption{A screenshot of the full window with light turned off.}
+    \label{fig:full-window}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/full-window-light-on.png}
+    \caption{A screenshot of the full window with light turned on.}
+    \label{fig:viewport}
+\end{figure}
+
+\end{document}
