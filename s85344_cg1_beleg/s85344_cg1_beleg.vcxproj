@@ -81,6 +81,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <CopyLocalProjectReference>true</CopyLocalProjectReference>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,6 +143,10 @@
       <AdditionalLibraryDirectories>D:\Programme\OpenGL\glew-2.1.0\lib\Release\x64;D:\Programme\OpenGL\freeglut-3.0.0\lib\Release;D:\Programme\OpenGL\FreeImage3180Win32Win64\Dist\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>freeglut.lib;glew32.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="util\cams\FixedCamera.cpp" />
@@ -198,6 +204,14 @@
     <Image Include="textures\venus.jpg" />
     <Image Include="textures\wall.jpg" />
     <Image Include="textures\wood.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="shaders\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="textures\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
